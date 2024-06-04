@@ -370,7 +370,7 @@ void Shape::RotateX(float angle)
 
 Objects::Objects()
 {
-    numShapes = 91;
+    numShapes = 98;
     shapes = new Shape *[numShapes];
 
     vec3 wallCenters[4] = {
@@ -546,7 +546,7 @@ Objects::Objects()
 
     /**
      * The following objects is the set of 4 chairs at the far left
-     */ 
+     */
     startingPosX = -0.7;
     startingPosZ = -2.8;
     shapes[82] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
@@ -561,8 +561,23 @@ Objects::Objects()
     /**
      * The following objects is the cluster of blue sofas
      */
-    vec3 SofaColour = vec3(0, 0, 1);
+    vec3 SofaColourBlue = vec3(0, 0, 1);
+    vec3 SofaColourYellow = vec3(1, 1, 0);
     startingPosX = -0.75;
     startingPosZ = -2.2;
-    shapes[90] = new Box(vec3(startingPosX, -1.8075, startingPosZ), 0.25, 0.5, 0.5, SofaColour);
+    shapes[90] = new Box(vec3(startingPosX, -1.8075, startingPosZ), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[91] = new Box(vec3(startingPosX - (0.5 * gap), -1.8075, startingPosZ + (2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[92] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (2.5 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[93] = new Box(vec3(startingPosX + (2 * gap), -1.8075, startingPosZ + (2.5 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[94] = new Box(vec3(startingPosX + (3 * gap), -1.8075, startingPosZ + (2.3 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[95] = new Box(vec3(startingPosX + (1.75 * gap), -1.8075, startingPosZ - (0.3 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[96] = new Box(vec3(startingPosX + (3 * gap), -1.8075, startingPosZ - (0.2 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+
+    /**
+     * This object will render the table in the middle of the sofas
+    */
+    vec3 TableColour = vec3(1, 1, 1);
+    startingPosX = -0.75;
+    startingPosZ = -2.2;
+    shapes[97] = new Box(vec3(startingPosX + (2* gap), -1.725, startingPosZ + (gap)), 0.1, 2, 0.6, TableColour);
 }
