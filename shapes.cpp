@@ -238,41 +238,64 @@ WindowPane::WindowPane(vec3 center, double height, double width, double length, 
         shapes[0] = new Box(center,height, width, length, vec4(1, 1, 0, 0.5));
     }
 
-    vec3 cR = center + vec3(0.8, 0.0, 0.00);
-    vec3 cL = center + vec3(-0.8, 0.0, 0.00);
-    vec3 cN = center + vec3(0.0, 0.0, 0.25);
-    vec3 cF = center + vec3(0.0, 0.0, -0.25);
+    vec3 cR = center + vec3(0.275, 0.0, 0.00);
+    vec3 cL = center + vec3(-0.275, 0.0, 0.00);
+    vec3 cN = center + vec3(0.0, 0.0, 0.085);
+    vec3 cF = center + vec3(0.0, 0.0, -0.085);
 
     //Frame
-    shapes[1] = new Box(cR, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
-    shapes[2] = new Box(cL, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
-    shapes[3] = new Box(cN, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
-    shapes[4] = new Box(cF, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
+    shapes[1] = new Box(cR, 0.05, 0.05, length+0.045, vec4(0.3, 0.3, 0.3, 1));
+    shapes[2] = new Box(cL, 0.05, 0.05, length+0.045, vec4(0.3, 0.3, 0.3, 1));
+    shapes[3] = new Box(cN, 0.05, width, 0.05, vec4(0.3, 0.3, 0.3, 1));
+    shapes[4] = new Box(cF, 0.05, width, 0.05, vec4(0.3, 0.3, 0.3, 1));
 }
 
 Roof::Roof()
 {
-    numShapes = 4;
+    numShapes = 8*2*3;
     shapes = new Shape *[numShapes];
     
-    double height = 0.2;
+    double height = 0.02;
     double width = 1.6;
     double length = 0.51;
 
-    vec3 centers[4] = {
-        vec3(0, 0, 0),
-        vec3(-0.5, 0, 0),
-        vec3(-1.0, 0, 0),
-        vec3(-1.5, 0, 0)};
+    // vec3 centers[5] = {
+    //     vec3(1.1, 1.85, 0),
+    //     vec3(0.55, 1.85, 0),
+    //     vec3(0, 1.85, 0),
+    //     vec3(-0.55, 1.85, 0),
+    //     vec3(-1.1, 1.85, 0),
+    // };
 
-    vec4 colors[2] = {
-        vec4(0, 0, 1, 1),
-        vec4(1, 0, 0, 1)};
+    double x = -1.1;
+    double y = 1.85;
+    double z = 5.5;
+    int index = 0;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 3; j++) {
+            shapes[index++] = new WindowPane(vec3(x,y,z), height, width, length, true);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, true);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, true);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, false);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, false);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, true);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, true);
+            shapes[index++] = new WindowPane(vec3(x,y,z-=0.175), height, width, length, true);
+            z -= 0.005;
+        }
+        x += 0.55;
+        z = 5.5;
+    }
 
-    shapes[0] = new WindowPane(centers[0], height, width, length, true);
-    shapes[1] = new WindowPane(centers[1], height, width, length, true);
-    shapes[2] = new WindowPane(centers[2], height, width, length, false);
-    shapes[3] = new WindowPane(centers[3], height, width, length, false);
+    // shapes[0] = new WindowPane(centers[0], height, width, length, true);
+    // shapes[1] = new WindowPane(centers[1], height, width, length, true);
+    // shapes[2] = new WindowPane(centers[2], height, width, length, false);
+    // shapes[3] = new WindowPane(centers[3], height, width, length, false);
+
+    // x = -1.1;
+    // z = 5.5;
+    // shapes[4] = new WindowPane(vec3(x, 1.85, z), height, width, length, true);
+    // shapes[5] = new WindowPane(vec3(x, 1.85, z+(-0.18)), height, width, length, false);
 }
 
 Scene::Scene() 
