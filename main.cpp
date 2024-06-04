@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.hpp"
-#include "shapes.h"
+#include "shapesOpaque.h"
 #include "camera.h"
 
 #define timeDT std::chrono::_V2::steady_clock::time_point
@@ -133,8 +133,8 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    // Shape *shp = new Walls();
-    Shape *shp = new Objects();
+    // ShapeOpaque *shp = new Walls();
+    ShapeOpaque *shp = new Objects();
     do
     {
         float currentTime = glfwGetTime();

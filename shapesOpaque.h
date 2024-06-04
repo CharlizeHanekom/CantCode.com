@@ -1,5 +1,5 @@
-#ifndef SHAPES_H
-#define SHAPES_H
+#ifndef ShapeOpaqueS_H
+#define ShapeOpaqueS_H
 
 #include <iostream>
 
@@ -11,13 +11,13 @@ using namespace glm;
 using namespace std;
 
 
-struct Shape{
+struct ShapeOpaque{
     vec3** vertices;
     vec3* colors;
-    Shape** shapes;
-    int numShapes;
+    ShapeOpaque** ShapeOpaques;
+    int numShapeOpaques;
 
-    ~Shape();
+    ~ShapeOpaque();
 
     virtual void applyMatrix(mat4x4);
     virtual GLfloat* toVertexArray();
@@ -31,34 +31,34 @@ struct Shape{
     void RotateX(float angle);
 };
 
-struct Triangle: public Shape{
+struct Triangle: public ShapeOpaque{
     Triangle(vec3, vec3, vec3, vec3 = vec3(1.0f, 0.0f, 0.0f));
     int numVertices();
     int numColors();
     int numPoints();
 };
 
-struct Rectangle: public Shape{
+struct Rectangle: public ShapeOpaque{
     Rectangle(vec3, vec3, vec3, vec3, vec3 = vec3(0.0f, 1.0f, 0.0f));
 };
 
-struct Box: public Shape{
+struct Box: public ShapeOpaque{
     Box(vec3 center, double height, double width, double length, vec3 = vec3(1.0f, 0.2f, 0.2f));
 };
 
-struct Boxes: public Shape{
+struct Boxes: public ShapeOpaque{
     Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec3* colors);
 };
 
-struct House: public Shape{
+struct House: public ShapeOpaque{
     House();
 };
 
-struct Walls: public Shape{
+struct Walls: public ShapeOpaque{
     Walls();
 };
 
-class Cylinder: public Shape{
+class Cylinder: public ShapeOpaque{
 public:
     Cylinder();
     Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec3 color = vec3(0.0f, 0.0f, 1.0f));
@@ -66,7 +66,7 @@ public:
     
 };
 
-struct Objects: public Shape{
+struct Objects: public ShapeOpaque{
     Objects();
 };
-#endif /*SHAPES_H*/
+#endif /*ShapeOpaqueS_H*/
