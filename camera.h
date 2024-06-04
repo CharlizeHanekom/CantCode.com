@@ -14,6 +14,7 @@ public:
     glm::vec3 front;
     glm::vec3 up;
     GLfloat zoom;
+    GLfloat roll;
 
     Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed);
 

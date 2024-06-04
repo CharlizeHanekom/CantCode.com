@@ -21,7 +21,7 @@ using namespace glm;
 using namespace std;
 
 const GLuint SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
-
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.01f);
 const char *getError()
 {
     const char *errorDescription;
@@ -68,7 +68,27 @@ inline GLFWwindow *setUp()
     startUpGLEW();
     return window;
 }
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    static double lastX = 0.0f;
+    static double lastY = 0.0f;
+    static bool firstMouse = true;
 
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    double xoffset = xpos - lastX;
+    double yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.mouseControl(xoffset, yoffset);
+}
 int main()
 {
     GLFWwindow *window;
@@ -110,7 +130,6 @@ int main()
     lastTime = glfwGetTime();
 
     Shape *shp = new Walls();
-    Camera camera(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.1f);
     do
     {
         float currentTime = glfwGetTime();
@@ -175,17 +194,20 @@ int main()
         GLfloat currentFrame = glfwGetTime();
         lastFrame = currentFrame;
 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            keys[GLFW_KEY_W] = true;
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            keys[GLFW_KEY_S] = true;
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            keys[GLFW_KEY_A] = true;
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            keys[GLFW_KEY_D] = true;
+        // glfwSetCursorPosCallback(window, mouse_callback);
+        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        keys[GLFW_KEY_W] = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
+        keys[GLFW_KEY_S] = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
+        keys[GLFW_KEY_A] = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
+        keys[GLFW_KEY_D] = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
+        keys[GLFW_KEY_SPACE] = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
+        keys[GLFW_KEY_LEFT_CONTROL] = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
+        keys[GLFW_KEY_I] = glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS;
+        keys[GLFW_KEY_K] = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
+        keys[GLFW_KEY_J] = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
+        keys[GLFW_KEY_L] = glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS;
 
         camera.keyControl(keys, deltaTime);
-
         // Calculate the view matrix
         glm::mat4 view = camera.calculateViewMatrix();
 
@@ -195,56 +217,6 @@ int main()
         // Pass the view matrix to the shader
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         // Reminder: The examples use GLM but for the practicals you may not use GLM and all the matrix calculations needs to be done in the application not the shaders.
-        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        {
-            mat4x4 rotationX = mat4x4(0.0f);
-
-            rotationX[0].x = 1;
-            rotationX[1].y = cos(0.02);
-            rotationX[1].z = -sin(0.02);
-            rotationX[2].y = sin(0.02);
-            rotationX[2].z = cos(0.02);
-            rotationX[3].w = 1;
-
-            mat4x4 rotationY = mat4x4(0.0f);
-
-            rotationY[0].x = cos(0.04);
-            rotationY[0].z = -sin(0.04);
-            rotationY[1].y = 1;
-            rotationY[2].x = sin(0.04);
-            rotationY[2].z = cos(0.04);
-            rotationY[3].w = 1;
-
-            mat4x4 rot = rotationX * rotationY;
-
-            mat4x4 trans = transpose(rot);
-
-            shp->applyMatrix(trans);
-        }
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        {
-            mat4x4 rotationX = mat4x4(0.0f);
-
-            rotationX[0].x = 1;
-            rotationX[1].y = cos(-0.02);
-            rotationX[1].z = -sin(-0.02);
-            rotationX[2].y = sin(-0.02);
-            rotationX[2].z = cos(-0.02);
-            rotationX[3].w = 1;
-
-            mat4x4 rotationY = mat4x4(0.0f);
-
-            rotationY[0].x = cos(0.04);
-            rotationY[0].z = -sin(0.04);
-            rotationY[1].y = 1;
-            rotationY[2].x = sin(0.04);
-            rotationY[2].z = cos(0.04);
-            rotationY[3].w = 1;
-
-            mat4x4 rot = rotationX * rotationY;
-
-            shp->applyMatrix(transpose(rot));
-        }
 
         delete[] vertices;
         delete[] colors;

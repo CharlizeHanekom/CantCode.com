@@ -10,6 +10,7 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
     moveSpeed = startMoveSpeed;
     turnSpeed = startTurnSpeed;
     zoom = 45.0f;
+    roll = 0.0f;
     update();
 }
 
@@ -24,8 +25,10 @@ void Camera::update()
     front.y = sin(glm::radians(pitch));
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     front = glm::normalize(front);
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(roll), front);
+    // Rotate the up vector
+    up = glm::normalize(glm::vec3(rotation * glm::vec4(up, 0.0f)));
 }
-
 void Camera::keyControl(bool* keys, GLfloat deltaTime)
 {
     GLfloat velocity = moveSpeed * deltaTime;
@@ -45,8 +48,33 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
     {
         position += glm::normalize(glm::cross(front, up)) * velocity;
     }
+    if (keys[GLFW_KEY_SPACE])
+    {
+        position += up * velocity;
+    }
+    if (keys[GLFW_KEY_LEFT_CONTROL])
+    {
+        position -= up * velocity;
+    }
+    GLfloat yawSpeed = 50.0f;
+    if (keys[GLFW_KEY_J])
+    {
+        yaw -= yawSpeed * deltaTime;
+    }
+    if (keys[GLFW_KEY_L])
+    {
+        yaw += yawSpeed * deltaTime;
+    }
+    if (keys[GLFW_KEY_I])
+    {
+        pitch += yawSpeed * deltaTime;
+    }
+    if (keys[GLFW_KEY_K])
+    {
+        pitch -= yawSpeed * deltaTime;
+    }
+    update();
 }
-
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
 {
     xChange *= turnSpeed;
