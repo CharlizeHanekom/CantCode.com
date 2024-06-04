@@ -26,6 +26,9 @@ struct Shape{
 
     virtual int numVertices();
     virtual int numColors();
+    
+    void RotateY(float angle);
+    void RotateX(float angle);
 };
 
 struct Triangle: public Shape{
@@ -53,5 +56,17 @@ struct House: public Shape{
 
 struct Walls: public Shape{
     Walls();
+};
+
+class Cylinder: public Shape{
+public:
+    Cylinder();
+    Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec3 color = vec3(0.0f, 0.0f, 1.0f));
+    void Circles(vec3 center, int numSidesOnBase, float height, float radius, vec3 color = vec3(0.0f, 0.0f, 1.0f));
+    
+};
+
+struct Objects: public Shape{
+    Objects();
 };
 #endif /*SHAPES_H*/
