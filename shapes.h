@@ -51,4 +51,7 @@ struct House: public Shape{
     House();
 };
 
+struct Walls: public Shape{
+    Walls();
+};
 #endif /*SHAPES_H*/

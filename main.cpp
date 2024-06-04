@@ -9,14 +9,18 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "shader.hpp"
 #include "shapes.h"
+#include "camera.h"
 
 #define timeDT std::chrono::_V2::steady_clock::time_point
 
 using namespace glm;
 using namespace std;
+
+const GLuint SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
 
 const char *getError()
 {
@@ -105,28 +109,8 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    // Here we create a the boxes object which consists of two boxes
-    vec3 centers[2] = {
-        vec3(0, 0, 0),
-        vec3(-0.1, -0.1, -0.1)};
-    double heights[2] = {
-        0.2,
-        0.2,
-    };
-    double widths[2] = {
-        0.2,
-        0.2,
-    };
-    double lengths[2] = {
-        0.2,
-        0.2,
-    };
-    vec3 colors[2] = {
-        vec3(0, 0, 1),
-        vec3(1, 0, 0)};
-
-    Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
-    // Shape *shp = new House();
+    Shape *shp = new Walls();
+    Camera camera(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.1f);
     do
     {
         float currentTime = glfwGetTime();
@@ -169,6 +153,14 @@ int main()
             0,        // stride
             (void *)0 // array buffer offset
         );
+        // Calculate the projection matrix
+        glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+        // Get the location of the 'projection' uniform variable in the shader
+        GLint projLoc = glGetUniformLocation(programID, "projection");
+
+        // Pass the projection matrix to the shader
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
         glDrawArrays(GL_TRIANGLES, 0, shp->numPoints()); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
@@ -178,7 +170,30 @@ int main()
         // Here we swap the buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
+        bool keys[1024];
+        GLfloat lastFrame = 0.0f;
+        GLfloat currentFrame = glfwGetTime();
+        lastFrame = currentFrame;
 
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            keys[GLFW_KEY_W] = true;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            keys[GLFW_KEY_S] = true;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            keys[GLFW_KEY_A] = true;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            keys[GLFW_KEY_D] = true;
+
+        camera.keyControl(keys, deltaTime);
+
+        // Calculate the view matrix
+        glm::mat4 view = camera.calculateViewMatrix();
+
+        // Get the location of the 'view' uniform variable in the shade
+        GLint viewLoc = glGetUniformLocation(programID, "view");
+
+        // Pass the view matrix to the shader
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         // Reminder: The examples use GLM but for the practicals you may not use GLM and all the matrix calculations needs to be done in the application not the shaders.
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         {
