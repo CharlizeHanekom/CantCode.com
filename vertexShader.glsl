@@ -1,12 +1,12 @@
 #version 330 core
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec3 vertexColor;
+layout(location = 1) in vec4 vertexColor;
 
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec3 fragmentColor;
+out vec4 fragmentColor;
 
 void main() {
     // Transform the vertex position to clip space using view and projection matrices
