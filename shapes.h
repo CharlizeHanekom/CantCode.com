@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <cmath>
 
 using namespace glm;
 using namespace std;
@@ -47,14 +48,27 @@ struct Boxes: public Shape{
     Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec4* colors);
 };
 
-struct House: public Shape{
-    House();
+struct NorthWall: public Shape{
+    NorthWall(vec3);
 };
-
+struct EastWall: public Shape{
+    EastWall(vec3);
+};
+struct SouthWall: public Shape{
+    SouthWall(vec3);
+};
+struct WestWall: public Shape{
+    WestWall(vec3);
+};
+struct WoodenDecoration: public Shape{
+    WoodenDecoration(vec3);
+};
 struct Walls: public Shape{
     Walls();
 };
-
+struct Door: public Shape{
+    Door(vec3);
+};
 struct WindowPane: public Shape{
     WindowPane(vec3 center, double height, double width, double length, bool stained);
 };

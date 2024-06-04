@@ -32,6 +32,10 @@ void Camera::update()
 void Camera::keyControl(bool* keys, GLfloat deltaTime)
 {
     GLfloat velocity = moveSpeed * deltaTime;
+    if(keys[GLFW_KEY_LEFT_SHIFT])
+    {
+        velocity *= 2.0f;
+    }
     if (keys[GLFW_KEY_W])
     {
         position += front * velocity;
@@ -73,6 +77,14 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
     {
         pitch -= yawSpeed * deltaTime;
     }
+    if (keys[GLFW_KEY_U])
+    {
+        roll += yawSpeed * deltaTime;
+    }
+    if (keys[GLFW_KEY_O])
+    {
+        roll -= yawSpeed * deltaTime;
+    }
     if (pitch > 89.0f)
     {
         pitch = 89.0f;
@@ -82,6 +94,7 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
         pitch = -89.0f;
     }
     update();
+    roll = 0.0f;
 }
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
 {

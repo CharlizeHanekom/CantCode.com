@@ -21,7 +21,7 @@ using namespace glm;
 using namespace std;
 
 const GLuint SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.01f);
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.02f);
 const char *getError()
 {
     const char *errorDescription;
@@ -213,6 +213,9 @@ int main()
         keys[GLFW_KEY_K] = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
         keys[GLFW_KEY_J] = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
         keys[GLFW_KEY_L] = glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS;
+        keys[GLFW_KEY_U] = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
+        keys[GLFW_KEY_O] = glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS;
+        keys[GLFW_KEY_LEFT_SHIFT] = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS;
 
         camera.keyControl(keys, deltaTime);
         // Calculate the view matrix
@@ -229,7 +232,7 @@ int main()
         delete[] colors;
 
         lastTime = currentTime;
-        // cout << "FPS: " << 1 / deltaTime << endl;
+        cout << "FPS: " << 1 / deltaTime << endl;
 
     } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
