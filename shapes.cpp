@@ -205,12 +205,12 @@ Box::Box(vec3 center, double height, double width, double length, vec4 color)
     vec3 farLeftBottom = farPlane + leftPlane + bottomPlane;
     vec3 farRightBottom = farPlane + rightPlane + bottomPlane;
 
-    Rectangle *front = new Rectangle(nearLeftTop, nearRightTop, nearLeftBottom, nearRightBottom, color*0.1f);
-    Rectangle *back = new Rectangle(farRightTop, farLeftTop, farRightBottom, farLeftBottom, color*0.2f);
-    Rectangle *left = new Rectangle(farLeftTop, nearLeftTop, farLeftBottom, nearLeftBottom, color*0.3f);
-    Rectangle *right = new Rectangle(nearRightTop, farRightTop, nearRightBottom, farRightBottom, color*0.4f);
-    Rectangle *bottom = new Rectangle(nearLeftBottom, nearRightBottom, farLeftBottom, farRightBottom, color*0.5f);
-    Rectangle *top = new Rectangle(nearLeftTop, nearRightTop, farLeftTop, farRightTop, color*0.6f);
+    Rectangle *front = new Rectangle(nearLeftTop, nearRightTop, nearLeftBottom, nearRightBottom, color);
+    Rectangle *back = new Rectangle(farRightTop, farLeftTop, farRightBottom, farLeftBottom, color);
+    Rectangle *left = new Rectangle(farLeftTop, nearLeftTop, farLeftBottom, nearLeftBottom, color);
+    Rectangle *right = new Rectangle(nearRightTop, farRightTop, nearRightBottom, farRightBottom, color);
+    Rectangle *bottom = new Rectangle(nearLeftBottom, nearRightBottom, farLeftBottom, farRightBottom, color);
+    Rectangle *top = new Rectangle(nearLeftTop, nearRightTop, farLeftTop, farRightTop, color);
 
     numShapes = 6;
     shapes = new Shape *[numShapes]
@@ -229,23 +229,50 @@ Box::Box(vec3 center, double height, double width, double length, vec4 color)
 // }
 
 
+WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained){
+    numShapes = 5;
+    shapes = new Shape *[numShapes];
+    if (!stained) {
+        shapes[0] = new Box(center, height, width, length, vec4(1, 1, 1, 0.3));
+    } else {
+        shapes[0] = new Box(center,height, width, length, vec4(1, 1, 0, 0.5));
+    }
+    // vec3 c = vec3(center.x+height, center.y+height, center.z+height);
+    // vec3 c = vec3(0.05, 0.05, 0.05);
+    vec3 cR = center + vec3(0.0155, 0.0, 0.00);
+    vec3 cL = center + vec3(-0.0155, 0.0, 0.00);
+    vec3 cN = center + vec3(0.0, 0.0, 0.0355);
+    vec3 cF = center + vec3(0.0, 0.0, -0.0355);
+    shapes[1] = new Box(cR, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
+    shapes[2] = new Box(cL, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
+    shapes[3] = new Box(cN, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
+    shapes[4] = new Box(cF, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
+}
+
 Roof::Roof()
 {
-    numShapes = 3;
+    numShapes = 2;
     shapes = new Shape *[numShapes];
-    shapes[0] = new Triangle(
-        vec3(0, 0.4, 0),
-        vec3(-0.2, 0.2, 0),
-        vec3(0.2, 0.2, 0));
-    shapes[1] = new Rectangle(
-        vec3(-0.2, 0.2, 0.5),
-        vec3(0.2, 0.2, 0.5),
-        vec3(-0.2, -0.2, 0.5),
-        vec3(0.2, -0.2, 0.5));
-    shapes[2] = new Rectangle(
-        vec3(-0.05, 0, 0),
-        vec3(0.05, 0, 0),
-        vec3(-0.05, -0.2, 0),
-        vec3(0.05, -0.2, 0),
-        vec4(0, 0, 1, 1));
+    
+    vec3 centers[2] = {
+        vec3(0, 0, 0),
+        vec3(-0.08, -0.08, -0.08)};
+    double heights[2] = {
+        0.02,
+        0.2,
+    };
+    double widths[2] = {
+        0.08,
+        0.2,
+    };
+    double lengths[2] = {
+        0.2,
+        0.2,
+    };
+    vec4 colors[2] = {
+        vec4(0, 0, 1, 1),
+        vec4(1, 0, 0, 1)};
+
+    shapes[0] = new WindowPane(centers[0], heights[0], widths[0], lengths[0], true);
+    shapes[1] = new WindowPane(centers[1], heights[0], widths[0], lengths[0], false);
 }

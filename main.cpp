@@ -78,7 +78,7 @@ int main()
         throw;
     }
 
-    glClearColor(0.2, 0.2, 0.2, 0.2);
+    glClearColor(0.4, 0.4, 0.8, 0.0);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);

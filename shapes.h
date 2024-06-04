@@ -51,8 +51,8 @@ struct Roof: public Shape{
     Roof();
 };
 
-struct WindowPanel: public Shape{
-    WindowPanel(vec3 center, double height, double width,vec3* colors);
+struct WindowPane: public Shape{
+    WindowPane(vec3 center, double height, double width, double length, bool stained);
 };
 
 
