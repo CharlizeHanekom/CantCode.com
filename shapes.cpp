@@ -2,6 +2,21 @@
 
 Shape::~Shape()
 {
+    if (shapes) {
+        for (int i = 0; i < numShapes; ++i) {
+            delete shapes[i];
+        }
+        delete[] shapes;
+    }
+    if (vertices) {
+        for (int i = 0; i < numPoints(); ++i) {
+            delete vertices[i];
+        }
+        delete[] vertices;
+    }
+    if (colors) {
+        delete[] colors;
+    }
 }
 
 int Shape::numPoints()
@@ -69,6 +84,7 @@ GLfloat *Shape::toColorArray()
             result[count++] = colors[i][0];
             result[count++] = colors[i][1];
             result[count++] = colors[i][2];
+            result[count++] = colors[i][3];
         }
     }
     return result;
@@ -112,7 +128,7 @@ int Shape::numColors()
     return count;
 }
 
-Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec3 color)
+Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec4 color)
 {
     numShapes = 0;
     shapes = new Shape *[0];
@@ -123,8 +139,8 @@ Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec3 color)
     vertices[1] = new vec3(point2);
     vertices[2] = new vec3(point3);
 
-    colors = new vec3[n];
-    for (int i = 0; i < 3; i++)
+    colors = new vec4[n];
+    for (int i = 0; i < n; i++)
     {
         colors[i] = color;
     }
@@ -137,7 +153,7 @@ int Triangle::numVertices()
 
 int Triangle::numColors()
 {
-    return 9;
+    return 12;
 }
 
 int Triangle::numPoints()
@@ -145,7 +161,7 @@ int Triangle::numPoints()
     return 3;
 }
 
-Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
+Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec4 color)
 {
     numShapes = 2;
     shapes = new Shape *[numShapes];
@@ -162,7 +178,7 @@ Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
         }
     }
 
-    colors = new vec3[n];
+    colors = new vec4[n];
 
     for (int i = 0; i < n; i++)
     {
@@ -170,28 +186,7 @@ Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
     }
 }
 
-House::House()
-{
-    numShapes = 3;
-    shapes = new Shape *[numShapes];
-    shapes[0] = new Triangle(
-        vec3(0, 0.4, 0),
-        vec3(-0.2, 0.2, 0),
-        vec3(0.2, 0.2, 0));
-    shapes[1] = new Rectangle(
-        vec3(-0.2, 0.2, 0.5),
-        vec3(0.2, 0.2, 0.5),
-        vec3(-0.2, -0.2, 0.5),
-        vec3(0.2, -0.2, 0.5));
-    shapes[2] = new Rectangle(
-        vec3(-0.05, 0, 0),
-        vec3(0.05, 0, 0),
-        vec3(-0.05, -0.2, 0),
-        vec3(0.05, -0.2, 0),
-        vec3(0, 0, 1));
-}
-
-Box::Box(vec3 center, double height, double width, double length, vec3 color)
+Box::Box(vec3 center, double height, double width, double length, vec4 color)
 {
     vec3 topPlane = center + vec3(0, height / 2, 0);
     vec3 bottomPlane = center - vec3(0, height / 2, 0);
@@ -224,11 +219,33 @@ Box::Box(vec3 center, double height, double width, double length, vec3 color)
     };
 }
 
-Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, double *lengths, vec3 *colors)
+// Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, double *lengths, vec3 *colors)
+// {
+//     numShapes = numBoxes;
+//     shapes = new Shape*[numShapes];
+//     for(int i=0; i < numShapes; i++){
+//         shapes[i] = new Box(centers[i],heights[i], widths[i], lengths[i], colors[i]);
+//     }
+// }
+
+
+Roof::Roof()
 {
-    numShapes = numBoxes;
-    shapes = new Shape*[numShapes];
-    for(int i=0; i < numShapes; i++){
-        shapes[i] = new Box(centers[i],heights[i], widths[i], lengths[i], colors[i]);
-    }
+    numShapes = 3;
+    shapes = new Shape *[numShapes];
+    shapes[0] = new Triangle(
+        vec3(0, 0.4, 0),
+        vec3(-0.2, 0.2, 0),
+        vec3(0.2, 0.2, 0));
+    shapes[1] = new Rectangle(
+        vec3(-0.2, 0.2, 0.5),
+        vec3(0.2, 0.2, 0.5),
+        vec3(-0.2, -0.2, 0.5),
+        vec3(0.2, -0.2, 0.5));
+    shapes[2] = new Rectangle(
+        vec3(-0.05, 0, 0),
+        vec3(0.05, 0, 0),
+        vec3(-0.05, -0.2, 0),
+        vec3(0.05, -0.2, 0),
+        vec4(0, 0, 1, 1));
 }

@@ -53,7 +53,7 @@ inline GLFWwindow *setUp()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
     GLFWwindow *window;                                            // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(1000, 1000, "Experiment", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "CantCode.com", NULL, NULL);
     if (window == NULL)
     {
         cout << getError() << endl;
@@ -67,7 +67,6 @@ inline GLFWwindow *setUp()
 
 int main()
 {
-    // This is the normal setup function calls.
     GLFWwindow *window;
     try
     {
@@ -79,11 +78,12 @@ int main()
         throw;
     }
 
-    // Here we set the background color to a shade of gray.
     glClearColor(0.2, 0.2, 0.2, 0.2);
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_NEAREST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Here we create a VAO
     GLuint VertexArrayID;
@@ -107,28 +107,9 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    // Here we create a the boxes object which consists of two boxes
-    vec3 centers[2] = {
-        vec3(0, 0, 0),
-        vec3(-0.1, -0.1, -0.1)};
-    double heights[2] = {
-        0.2,
-        0.2,
-    };
-    double widths[2] = {
-        0.2,
-        0.2,
-    };
-    double lengths[2] = {
-        0.2,
-        0.2,
-    };
-    vec3 colors[2] = {
-        vec3(0, 0, 1),
-        vec3(1, 0, 0)};
-
-    //Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
-    Shape *shp = new House();
+    // cout << "+ Shape" << endl;
+    Shape *shp = new Roof();
+    // cout << "- Shape" << endl;
     do
     {
         float currentTime = glfwGetTime();
@@ -139,40 +120,34 @@ int main()
         glUseProgram(programID);
 
         // Here we obtain the vertices and colors for the house as two dynamic arrays.
+        // cout << "+ toVertexArr" << endl;
         GLfloat *vertices = shp->toVertexArray();
+        // cout << "- toVertexArr" << endl;
+        // cout << "+ toColorArr" << endl;
         GLfloat *colors = shp->toColorArray();
+        // cout << "- toColorArr" << endl;
         
         //  Here we bind the VBOs
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numVertices()]), vertices, GL_STATIC_DRAW);
+        // glBufferData(GL_ARRAY_BUFFER, shp->numVertices() * 3 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numColors()]), colors, GL_STATIC_DRAW);
+        // glBufferData(GL_ARRAY_BUFFER, shp->numColors() * 4 * sizeof(GLfloat), colors, GL_STATIC_DRAW);
 
         // Here we enable the VAO and populate it.
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glVertexAttribPointer(
-            0,        // location 0 in the vertex shader.
-            3,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glVertexAttribPointer(
-            1,        // location 1 in the vertex shader.
-            3,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
+        // cout << "+ Draw" << endl;
         glDrawArrays(GL_TRIANGLES, 0, shp->numPoints()); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        // cout << "- Draw" << endl;
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
@@ -193,14 +168,6 @@ int main()
             rotationX[2].z = cos(0.02);
             rotationX[3].w = 1;
 
-            cout << endl<< "X" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rotationX[i][j];
-                }
-                cout << "\n";
-            }
-
             mat4x4 rotationY = mat4x4(0.0f);
 
             rotationY[0].x = cos(0.04);
@@ -210,31 +177,9 @@ int main()
             rotationY[2].z = cos(0.04);
             rotationY[3].w = 1;
 
-            cout << endl<< "Y" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rotationY[i][j];
-                }
-                cout << "\n";
-            }
-
             mat4x4 rot = rotationX * rotationY;
-            cout << endl<< "rot" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rot[i][j];
-                }
-                cout << "\n";
-            }
 
             mat4x4 trans = transpose(rot);
-            cout << endl<< "trans" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << trans[i][j];
-                }
-                cout << "\n";
-            }
 
             shp->applyMatrix(trans);
         }
@@ -263,13 +208,13 @@ int main()
             shp->applyMatrix(transpose(rot));
         }
 
-        // delete[] vertices;
-        // delete[] colors;
+        delete[] vertices;
+        delete[] colors;
 
         lastTime = currentTime;
-        cout << "FPS: " << 1 / deltaTime << endl;
+        // cout << "FPS: " << 1 / deltaTime << endl;
 
-    } while (glfwGetKey(window, GLFW_KEY_SPACE) != GLFW_PRESS &&
+    } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
 
     delete shp;

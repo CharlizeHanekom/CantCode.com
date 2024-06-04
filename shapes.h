@@ -13,7 +13,7 @@ using namespace std;
 
 struct Shape{
     vec3** vertices;
-    vec3* colors;
+    vec4* colors;
     Shape** shapes;
     int numShapes;
 
@@ -29,26 +29,31 @@ struct Shape{
 };
 
 struct Triangle: public Shape{
-    Triangle(vec3, vec3, vec3, vec3 = vec3(1.0f, 0.0f, 0.0f));
+    Triangle(vec3, vec3, vec3, vec4 = vec4(1.0f, 0.0f, 0.0f, 0.5f));
     int numVertices();
     int numColors();
     int numPoints();
 };
 
 struct Rectangle: public Shape{
-    Rectangle(vec3, vec3, vec3, vec3, vec3 = vec3(0.0f, 1.0f, 0.0f));
+    Rectangle(vec3, vec3, vec3, vec3, vec4 = vec4(0.0f, 1.0f, 0.0f,0.5f));
 };
 
 struct Box: public Shape{
-    Box(vec3 center, double height, double width, double length, vec3 = vec3(1.0f, 0.2f, 0.2f));
+    Box(vec3 center, double height, double width, double length, vec4 = vec4(1.0f, 0.2f, 0.2f, 1.0f));
 };
 
-struct Boxes: public Shape{
-    Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec3* colors);
+// struct Boxes: public Shape{
+//     Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec3* colors);
+// };
+
+struct Roof: public Shape{
+    Roof();
 };
 
-struct House: public Shape{
-    House();
+struct WindowPanel: public Shape{
+    WindowPanel(vec3 center, double height, double width,vec3* colors);
 };
+
 
 #endif /*SHAPES_H*/
