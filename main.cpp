@@ -78,10 +78,12 @@ int main()
         throw;
     }
 
-    glClearColor(0.2, 0.2, 0.2, 0.2);
+    glClearColor(0, 0, 0, 0);
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_NEAREST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Here we create a VAO
     GLuint VertexArrayID;
@@ -121,12 +123,14 @@ int main()
         0.2,
         0.2,
     };
-    vec3 colors[2] = {
-        vec3(0, 0, 1),
-        vec3(1, 0, 0)};
+    vec4 colors[2] = {
+        vec4(0, 0, 1, 1),
+        vec4(1, 0, 0, 1)};
 
-    Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
-    // Shape *shp = new House();
+    // Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
+    // cout << "+ Shape" << endl;
+    Shape *shp = new Roof();
+    // cout << "- Shape" << endl;
     do
     {
         float currentTime = glfwGetTime();
@@ -137,40 +141,34 @@ int main()
         glUseProgram(programID);
 
         // Here we obtain the vertices and colors for the house as two dynamic arrays.
+        // cout << "+ toVertexArr" << endl;
         GLfloat *vertices = shp->toVertexArray();
+        // cout << "- toVertexArr" << endl;
+        // cout << "+ toColorArr" << endl;
         GLfloat *colors = shp->toColorArray();
+        // cout << "- toColorArr" << endl;
         
         //  Here we bind the VBOs
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numVertices()]), vertices, GL_STATIC_DRAW);
+        // glBufferData(GL_ARRAY_BUFFER, shp->numVertices() * 3 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numColors()]), colors, GL_STATIC_DRAW);
+        // glBufferData(GL_ARRAY_BUFFER, shp->numColors() * 4 * sizeof(GLfloat), colors, GL_STATIC_DRAW);
 
         // Here we enable the VAO and populate it.
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glVertexAttribPointer(
-            0,        // location 0 in the vertex shader.
-            3,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glVertexAttribPointer(
-            1,        // location 1 in the vertex shader.
-            3,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
+        // cout << "+ Draw" << endl;
         glDrawArrays(GL_TRIANGLES, 0, shp->numPoints()); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        // cout << "- Draw" << endl;
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
