@@ -32,6 +32,10 @@ void Camera::update()
 void Camera::keyControl(bool* keys, GLfloat deltaTime)
 {
     GLfloat velocity = moveSpeed * deltaTime;
+    if(keys[GLFW_KEY_LEFT_SHIFT])
+    {
+        velocity *= 2.0f;
+    }
     if (keys[GLFW_KEY_W])
     {
         position += front * velocity;
