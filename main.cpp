@@ -78,7 +78,7 @@ int main()
         throw;
     }
 
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.2, 0.2, 0.2, 0.2);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -107,27 +107,6 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    // Here we create a the boxes object which consists of two boxes
-    vec3 centers[2] = {
-        vec3(0, 0, 0),
-        vec3(-0.1, -0.1, -0.1)};
-    double heights[2] = {
-        0.2,
-        0.2,
-    };
-    double widths[2] = {
-        0.2,
-        0.2,
-    };
-    double lengths[2] = {
-        0.2,
-        0.2,
-    };
-    vec4 colors[2] = {
-        vec4(0, 0, 1, 1),
-        vec4(1, 0, 0, 1)};
-
-    // Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
     // cout << "+ Shape" << endl;
     Shape *shp = new Roof();
     // cout << "- Shape" << endl;
