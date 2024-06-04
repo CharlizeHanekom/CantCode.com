@@ -53,7 +53,7 @@ inline GLFWwindow *setUp()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
     GLFWwindow *window;                                            // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(1000, 1000, "Experiment", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "CantCode.com", NULL, NULL);
     if (window == NULL)
     {
         cout << getError() << endl;
@@ -67,7 +67,6 @@ inline GLFWwindow *setUp()
 
 int main()
 {
-    // This is the normal setup function calls.
     GLFWwindow *window;
     try
     {
@@ -79,7 +78,6 @@ int main()
         throw;
     }
 
-    // Here we set the background color to a shade of gray.
     glClearColor(0.2, 0.2, 0.2, 0.2);
 
     glEnable(GL_DEPTH_TEST);
@@ -127,8 +125,8 @@ int main()
         vec3(0, 0, 1),
         vec3(1, 0, 0)};
 
-    //Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
-    Shape *shp = new House();
+    Shape *shp = new Boxes(2, centers, heights, widths, lengths, colors);
+    // Shape *shp = new House();
     do
     {
         float currentTime = glfwGetTime();
@@ -193,14 +191,6 @@ int main()
             rotationX[2].z = cos(0.02);
             rotationX[3].w = 1;
 
-            cout << endl<< "X" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rotationX[i][j];
-                }
-                cout << "\n";
-            }
-
             mat4x4 rotationY = mat4x4(0.0f);
 
             rotationY[0].x = cos(0.04);
@@ -210,31 +200,9 @@ int main()
             rotationY[2].z = cos(0.04);
             rotationY[3].w = 1;
 
-            cout << endl<< "Y" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rotationY[i][j];
-                }
-                cout << "\n";
-            }
-
             mat4x4 rot = rotationX * rotationY;
-            cout << endl<< "rot" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << rot[i][j];
-                }
-                cout << "\n";
-            }
 
             mat4x4 trans = transpose(rot);
-            cout << endl<< "trans" << endl;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    cout << trans[i][j];
-                }
-                cout << "\n";
-            }
 
             shp->applyMatrix(trans);
         }
@@ -263,13 +231,13 @@ int main()
             shp->applyMatrix(transpose(rot));
         }
 
-        // delete[] vertices;
-        // delete[] colors;
+        delete[] vertices;
+        delete[] colors;
 
         lastTime = currentTime;
-        cout << "FPS: " << 1 / deltaTime << endl;
+        // cout << "FPS: " << 1 / deltaTime << endl;
 
-    } while (glfwGetKey(window, GLFW_KEY_SPACE) != GLFW_PRESS &&
+    } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
 
     delete shp;
