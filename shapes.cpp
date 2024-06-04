@@ -69,6 +69,7 @@ GLfloat *Shape::toColorArray()
             result[count++] = colors[i][0];
             result[count++] = colors[i][1];
             result[count++] = colors[i][2];
+            result[count++] = colors[i][3];
         }
     }
     return result;
@@ -124,7 +125,7 @@ Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec4 color)
     vertices[2] = new vec3(point3);
 
     colors = new vec4[n];
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < n; i++)
     {
         colors[i] = color;
     }
@@ -137,7 +138,7 @@ int Triangle::numVertices()
 
 int Triangle::numColors()
 {
-    return 9;
+    return 12;
 }
 
 int Triangle::numPoints()
@@ -169,7 +170,6 @@ Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec4 color)
         colors[i] = color;
     }
 }
-
 
 Box::Box(vec3 center, double height, double width, double length, vec4 color)
 {
@@ -204,18 +204,10 @@ Box::Box(vec3 center, double height, double width, double length, vec4 color)
     };
 }
 
-Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, double *lengths, vec4 *colors)
-{
-    numShapes = numBoxes;
-    shapes = new Shape*[numShapes];
-    for(int i=0; i < numShapes; i++){
-        shapes[i] = new Box(centers[i],heights[i], widths[i], lengths[i], colors[i]);
-    }
-}
 float outWidth = 1;
 NorthWall::NorthWall(vec3 center)
 {
-    numShapes = 20;
+    numShapes = 21;
     shapes = new Shape *[numShapes];
 
     float totalHeight = 11;
@@ -242,7 +234,7 @@ NorthWall::NorthWall(vec3 center)
         float pillarZ = center.z - totalLength / 6 + pillarSpacing * (i + 1);
         shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec4(0.8, 0.8, 0.8, 1));
     }
-    // shapes[20] = new WoodenDecoration(center);
+    shapes[20] = new WoodenDecoration(center);
 }
 
 EastWall::EastWall(vec3 center)
@@ -317,16 +309,16 @@ WestWall::WestWall(vec3 center)
 
 WoodenDecoration::WoodenDecoration(vec3 center)
 {
-    numShapes = 15;
+    numShapes = 1;
     shapes = new Shape *[numShapes];
 
     float totalLength = 35;
-    float baseHeight = 2;
+    float baseHeight = 0.1;
     float prismWidth = 0.2;
     float prismDepth = 0.2;
     vec4 color(0.65, 0.16, 0.16, 1);
 
-    float prismSpacing = 0.01;
+    float prismSpacing = 1;
     float waveAmplitude = 2;
     float waveFrequency = 2 * M_PI / totalLength;
 
@@ -352,4 +344,59 @@ Walls::Walls()
     shapes[1] = new SouthWall(wallCenters[1]);
     shapes[2] = new EastWall(wallCenters[2]);
     shapes[3] = new WestWall(wallCenters[3]);
+}
+
+WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
+{
+    numShapes = 5;
+    shapes = new Shape *[numShapes];
+    if (!stained) {
+        shapes[0] = new Box(center, height, width, length, vec4(1, 1, 1, 0.3));
+    } else {
+        shapes[0] = new Box(center,height, width, length, vec4(1, 1, 0, 0.5));
+    }
+
+    vec3 cR = center + vec3(0.8, 0.0, 0.00);
+    vec3 cL = center + vec3(-0.8, 0.0, 0.00);
+    vec3 cN = center + vec3(0.0, 0.0, 0.25);
+    vec3 cF = center + vec3(0.0, 0.0, -0.25);
+
+    //Frame
+    shapes[1] = new Box(cR, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
+    shapes[2] = new Box(cL, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
+    shapes[3] = new Box(cN, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
+    shapes[4] = new Box(cF, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
+}
+
+Roof::Roof()
+{
+    numShapes = 4;
+    shapes = new Shape *[numShapes];
+    
+    double height = 0.2;
+    double width = 1.6;
+    double length = 0.51;
+
+    vec3 centers[4] = {
+        vec3(0, 0, 0),
+        vec3(-0.5, 0, 0),
+        vec3(-1.0, 0, 0),
+        vec3(-1.5, 0, 0)};
+
+    vec4 colors[2] = {
+        vec4(0, 0, 1, 1),
+        vec4(1, 0, 0, 1)};
+
+    shapes[0] = new WindowPane(centers[0], height, width, length, true);
+    shapes[1] = new WindowPane(centers[1], height, width, length, true);
+    shapes[2] = new WindowPane(centers[2], height, width, length, false);
+    shapes[3] = new WindowPane(centers[3], height, width, length, false);
+}
+
+Scene::Scene() 
+{
+    numShapes = 1;
+    shapes = new Shape *[numShapes];
+    shapes[0] = new Walls();
+    // shapes[1] = new Roof();
 }

@@ -135,7 +135,7 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    Shape *shp = new Walls();
+    Shape *shp = new Scene();
     do
     {
         float currentTime = glfwGetTime();
@@ -213,6 +213,8 @@ int main()
         keys[GLFW_KEY_K] = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
         keys[GLFW_KEY_J] = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
         keys[GLFW_KEY_L] = glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS;
+        keys[GLFW_KEY_U] = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
+        keys[GLFW_KEY_O] = glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS;
         keys[GLFW_KEY_LEFT_SHIFT] = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS;
 
         camera.keyControl(keys, deltaTime);
@@ -230,7 +232,7 @@ int main()
         delete[] colors;
 
         lastTime = currentTime;
-        // cout << "FPS: " << 1 / deltaTime << endl;
+        cout << "FPS: " << 1 / deltaTime << endl;
 
     } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
