@@ -235,13 +235,13 @@ Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, doubl
 Walls::Walls()
 {
     vec3 wallCenters[4] = {
-        vec3(0, 0, 0.3),
-        vec3(0, 0, -0.3),
-        vec3(0.2, 0, 0),
-        vec3(-0.2, 0, 0)};
-    double wallHeights[4] = {1, 1, 1, 1};
-    double wallLengths[4] = {0.01, 0.01, 2, 2};
-    double wallWidths[4] = {1.3, 1.3, 0.01, 0.01};
+        vec3(0, 0, 5.5),
+        vec3(0, 0, -5.5),
+        vec3(1.3, 0, 0),
+        vec3(-1.3, 0, 0)};
+    double wallHeights[4] = {11, 11, 11, 11};
+    double wallLengths[4] = {0.01, 0.01, 35, 35};
+    double wallWidths[4] = {11, 11, 0.01, 0.01};
     vec3 wallColors[4] = {
         vec3(1, 0, 0), // Red
         vec3(0, 1, 0), // Green
