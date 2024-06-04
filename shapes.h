@@ -66,7 +66,9 @@ struct WoodenDecoration: public Shape{
 struct Walls: public Shape{
     Walls();
 };
-
+struct Door: public Shape{
+    Door(vec3);
+};
 struct WindowPane: public Shape{
     WindowPane(vec3 center, double height, double width, double length, bool stained);
 };

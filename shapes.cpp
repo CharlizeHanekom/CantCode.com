@@ -345,7 +345,13 @@ Walls::Walls()
     shapes[2] = new EastWall(wallCenters[2]);
     shapes[3] = new WestWall(wallCenters[3]);
 }
-
+Door::Door(vec3 center)
+{
+    numShapes = 2;
+    shapes = new Shape *[numShapes];
+    shapes[0] = new Box(center, 2.5, 0.5, 0.1, vec4(0.4, 0.4, 0.4, 1));
+    shapes[1] = new Box(vec3(center.x, center.y, center.z - 0.05), 2.5, 0.5, 0.01, vec4(0.4, 0.4, 0.4, 1));
+}
 WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
 {
     numShapes = 5;
