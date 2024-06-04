@@ -48,9 +48,6 @@ struct Boxes: public Shape{
     Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec4* colors);
 };
 
-struct House: public Shape{
-    House();
-};
 struct NorthWall: public Shape{
     NorthWall(vec3);
 };

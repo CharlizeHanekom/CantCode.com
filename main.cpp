@@ -135,7 +135,7 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    Shape *shp = new Scene();
+    Shape *shp = new Walls();
     do
     {
         float currentTime = glfwGetTime();

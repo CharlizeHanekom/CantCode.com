@@ -112,7 +112,7 @@ int Shape::numColors()
     return count;
 }
 
-Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec3 color)
+Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec4 color)
 {
     numShapes = 0;
     shapes = new Shape *[0];
@@ -123,8 +123,8 @@ Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec3 color)
     vertices[1] = new vec3(point2);
     vertices[2] = new vec3(point3);
 
-    colors = new vec3[n];
-    for (int i = 0; i < 3; i++)
+    colors = new vec4[n];
+    for (int i = 0; i < 4; i++)
     {
         colors[i] = color;
     }
@@ -145,7 +145,7 @@ int Triangle::numPoints()
     return 3;
 }
 
-Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
+Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec4 color)
 {
     numShapes = 2;
     shapes = new Shape *[numShapes];
@@ -162,7 +162,7 @@ Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
         }
     }
 
-    colors = new vec3[n];
+    colors = new vec4[n];
 
     for (int i = 0; i < n; i++)
     {
@@ -170,28 +170,8 @@ Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec3 color)
     }
 }
 
-House::House()
-{
-    numShapes = 3;
-    shapes = new Shape *[numShapes];
-    shapes[0] = new Triangle(
-        vec3(0, 0.4, 0),
-        vec3(-0.2, 0.2, 0),
-        vec3(0.2, 0.2, 0));
-    shapes[1] = new Rectangle(
-        vec3(-0.2, 0.2, 0.5),
-        vec3(0.2, 0.2, 0.5),
-        vec3(-0.2, -0.2, 0.5),
-        vec3(0.2, -0.2, 0.5));
-    shapes[2] = new Rectangle(
-        vec3(-0.05, 0, 0),
-        vec3(0.05, 0, 0),
-        vec3(-0.05, -0.2, 0),
-        vec3(0.05, -0.2, 0),
-        vec3(0, 0, 1));
-}
 
-Box::Box(vec3 center, double height, double width, double length, vec3 color)
+Box::Box(vec3 center, double height, double width, double length, vec4 color)
 {
     vec3 topPlane = center + vec3(0, height / 2, 0);
     vec3 bottomPlane = center - vec3(0, height / 2, 0);
@@ -224,7 +204,7 @@ Box::Box(vec3 center, double height, double width, double length, vec3 color)
     };
 }
 
-Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, double *lengths, vec3 *colors)
+Boxes::Boxes(int numBoxes, vec3 *centers, double *heights, double *widths, double *lengths, vec4 *colors)
 {
     numShapes = numBoxes;
     shapes = new Shape*[numShapes];
@@ -246,21 +226,21 @@ NorthWall::NorthWall(vec3 center)
     float pillarWidth = 0.4;
 
     // Middle piece
-    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec3(0.9, 0.9, 0.9));
+    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9,1));
 
     // Top pieces
-    shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec3(0, 0.6, 1));
-    shapes[1] = new Box(vec3(center.x, center.y + largeHeight - smallHeight, center.z), largeHeight, outWidth, totalLength, vec3(0.4, 0.4, 0.4));
+    shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec4(0, 0.6, 1, 0.1));
+    shapes[1] = new Box(vec3(center.x, center.y + largeHeight - smallHeight, center.z), largeHeight, outWidth, totalLength, vec4(0.4, 0.4, 0.4, 1));
 
     // Bottom pieces
-    shapes[3] = new Box(vec3(center.x, center.y - largeHeight / 2 + smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec3(0, 0.6, 1));
-    shapes[4] = new Box(vec3(center.x, center.y - largeHeight + smallHeight, center.z), largeHeight, outWidth, totalLength, vec3(0.9, 0.9, 0.9));
+    shapes[3] = new Box(vec3(center.x, center.y - largeHeight / 2 + smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec4(0, 0.6, 1, 0.1));
+    shapes[4] = new Box(vec3(center.x, center.y - largeHeight + smallHeight, center.z), largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9, 1));
 
     // Pillars
     float pillarSpacing = totalLength / 50;
     for (int i = 0; i < 15; i++) {
         float pillarZ = center.z - totalLength / 6 + pillarSpacing * (i + 1);
-        shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec3(0.8, 0.8, 0.8));
+        shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec4(0.8, 0.8, 0.8, 1));
     }
     // shapes[20] = new WoodenDecoration(center);
 }
@@ -274,15 +254,15 @@ EastWall::EastWall(vec3 center)
     float sideWidth = totalWidth / 6;
 
     // Middle wall
-    shapes[2] = new Box(center, 11, middleWidth, outWidth, vec3(0.4, 0.4, 0.4));
+    shapes[2] = new Box(center, 11, middleWidth, outWidth, vec4(0.4, 0.4, 0.4,1));
 
     // Left walls
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y, center.z), 11, sideWidth, 0.01, vec3(0, 0.3, 1));
-    shapes[1] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, vec3(0.4, 0.4, 0.4));
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y, center.z), 11, sideWidth, 0.01, vec4(0, 0.3, 1, 0.1));
+    shapes[1] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Right walls
-    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y, center.z), 11, sideWidth, 0.01, vec3(0, 0.3, 1));
-    shapes[4] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, vec3(0.4, 0.4, 0.4));
+    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y, center.z), 11, sideWidth, 0.01, vec4(0, 0.3, 1, 0.1));
+    shapes[4] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 }
 
 SouthWall::SouthWall(vec3 center)
@@ -298,21 +278,21 @@ SouthWall::SouthWall(vec3 center)
     float pillarWidth = 0.4;
 
     // Middle piece
-    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec3(0.9, 0.9, 0.9));
+    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9, 1));
 
     // Top pieces
-    shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec3(0, 0.6, 1));
-    shapes[1] = new Box(vec3(center.x, center.y + largeHeight - smallHeight, center.z), largeHeight, outWidth, totalLength, vec3(0.4, 0.4, 0.4));
+    shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec4(0, 0.6, 1, 0.1));
+    shapes[1] = new Box(vec3(center.x, center.y + largeHeight - smallHeight, center.z), largeHeight, outWidth, totalLength, vec4(0.4, 0.4, 0.4, 1));
 
     // Bottom pieces
-    shapes[3] = new Box(vec3(center.x, center.y - largeHeight / 2 + smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec3(0, 0.6, 1));
-    shapes[4] = new Box(vec3(center.x, center.y - largeHeight + smallHeight, center.z), largeHeight, outWidth, totalLength, vec3(0.9, 0.9, 0.9));
+    shapes[3] = new Box(vec3(center.x, center.y - largeHeight / 2 + smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec4(0, 0.6, 1, 0.1));
+    shapes[4] = new Box(vec3(center.x, center.y - largeHeight + smallHeight, center.z), largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9, 1));
 
     // Pillars
     float pillarSpacing = totalLength / 50;
     for (int i = 0; i < 15; i++) {
         float pillarZ = center.z - totalLength / 6 + pillarSpacing * (i + 1);
-        shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec3(0.8, 0.8, 0.8));
+        shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec4(0.8, 0.8, 0.8, 1));
     }
 }
 
@@ -326,13 +306,13 @@ WestWall::WestWall(vec3 center)
     float sideWidth = totalWidth / 6;
 
     // Middle wall
-    shapes[1] = new Box(center, 11, middleWidth, 0.01, vec3(0, 0.3, 1));
+    shapes[1] = new Box(center, 11, middleWidth, 0.01, vec4(0, 0.3, 1, 0.1));
 
     // Left wall
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec3(0.4, 0.4, 0.4));
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Right wall
-    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec3(0.4, 0.4, 0.4));
+    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 }
 
 WoodenDecoration::WoodenDecoration(vec3 center)
@@ -344,7 +324,7 @@ WoodenDecoration::WoodenDecoration(vec3 center)
     float baseHeight = 2;
     float prismWidth = 0.2;
     float prismDepth = 0.2;
-    vec3 color(0.65, 0.16, 0.16);
+    vec4 color(0.65, 0.16, 0.16, 1);
 
     float prismSpacing = 0.01;
     float waveAmplitude = 2;
