@@ -73,6 +73,14 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
     {
         pitch -= yawSpeed * deltaTime;
     }
+    if (pitch > 89.0f)
+    {
+        pitch = 89.0f;
+    }
+    if (pitch < -89.0f)
+    {
+        pitch = -89.0f;
+    }
     update();
 }
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)

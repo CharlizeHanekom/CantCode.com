@@ -89,6 +89,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     camera.mouseControl(xoffset, yoffset);
 }
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera.scrollControl(yoffset);
+}
 int main()
 {
     GLFWwindow *window;
@@ -196,6 +200,7 @@ int main()
 
         // glfwSetCursorPosCallback(window, mouse_callback);
         // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetScrollCallback(window, scroll_callback);
         keys[GLFW_KEY_W] = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
         keys[GLFW_KEY_S] = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
         keys[GLFW_KEY_A] = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
