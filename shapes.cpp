@@ -370,7 +370,7 @@ void Shape::RotateX(float angle)
 
 Objects::Objects()
 {
-    numShapes = 98;
+    numShapes = 114;
     shapes = new Shape *[numShapes];
 
     vec3 wallCenters[4] = {
@@ -533,7 +533,7 @@ Objects::Objects()
     shapes[77] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.25, 0.5, PlantPotColour);
 
     /**
-     * The following objects is the set of 4 chairs at the far left
+     * The following objects is the set of 2 chairs at the far left
      */
     vec3 ChairColour = vec3(0.5, 0.5, 0.5);
     startingPosX = -0.6;
@@ -545,7 +545,7 @@ Objects::Objects()
     shapes[81] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
 
     /**
-     * The following objects is the set of 4 chairs at the far left
+     * The following objects is the set of 4 chairs at the middle left
      */
     startingPosX = -0.7;
     startingPosZ = -2.8;
@@ -580,4 +580,48 @@ Objects::Objects()
     startingPosX = -0.75;
     startingPosZ = -2.2;
     shapes[97] = new Box(vec3(startingPosX + (2* gap), -1.725, startingPosZ + (gap)), 0.1, 2, 0.6, TableColour);
+
+    /**
+     * The following objects is the set of 4 chairs at the middle infrornt of the dividerr
+     */
+    startingPosX = -0.3;
+    startingPosZ = -0.95;
+    shapes[98] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[99] = new Box(vec3(startingPosX, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[100] = new Box(vec3(startingPosX + gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[101] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[102] = new Box(vec3(startingPosX + 2 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[103] = new Box(vec3(startingPosX + 2 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[104] = new Box(vec3(startingPosX + 3 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[105] = new Box(vec3(startingPosX + 3 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+
+    /**
+     * The following objects is the set of 2 csofas and a small table at the middle left
+    */
+    vec3 SofaColourRed = vec3(1, 0, 0);
+    startingPosX = -1.1;
+    startingPosZ = 0.0;
+    shapes[106] = new Box(vec3(startingPosX, -1.8075, startingPosZ), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[107] = new Box(vec3(startingPosX, -1.8075, startingPosZ + (2.2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[108] = new Box(vec3(startingPosX, -1.725, startingPosZ + (gap)), 0.1, 0.8, 0.8, TableColour);
+    shapes[109] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (1.8 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+
+    /**
+     * The following object is the table near left to the coffee shop
+    */
+    startingPosX = -0.5;
+    startingPosZ = 4;
+    shapes[110] = new Box(vec3(startingPosX, -1.6, startingPosZ), 0.1, 0.75, 0.75, TableColour);
+    shapes[111] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.1, 0.1, TableColour);
+
+    /**
+     * The following object is the table near middle to the coffee shop
+    */
+    startingPosX = 0;
+    startingPosZ = 4.2;
+    shapes[112] = new Box(vec3(startingPosX, -1.6, startingPosZ), 0.1, 0.75, 0.75, TableColour);
+    shapes[113] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.1, 0.1, TableColour);
+
+
+
 }

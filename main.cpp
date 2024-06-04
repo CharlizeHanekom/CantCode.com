@@ -219,7 +219,7 @@ int main()
         delete[] colors;
 
         lastTime = currentTime;
-        // cout << "FPS: " << 1 / deltaTime << endl;
+        cout << "FPS: " << 1 / deltaTime << endl;
 
     } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
