@@ -416,7 +416,7 @@ Objects::Objects()
      */
     vec3 CubicleColour = vec3(0.2, 0.2, 0.2);
     vec3 CubicleSeatColour = vec3(1, 1, 0);
-    vec CubicleWoodColour = vec3(0.45, 0.25, 0.0);
+    vec3 CubicleWoodColour = vec3(0.45, 0.25, 0.0);
     float startingPosX = -0.23;
     float startingPosZ = 2.5;
     ShapeOpaques[10] = new Box(vec3(startingPosX, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
