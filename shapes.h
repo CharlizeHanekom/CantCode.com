@@ -14,7 +14,7 @@ using namespace std;
 
 struct Shape{
     vec3** vertices;
-    vec3* colors;
+    vec4* colors;
     Shape** shapes;
     int numShapes;
 
@@ -30,22 +30,22 @@ struct Shape{
 };
 
 struct Triangle: public Shape{
-    Triangle(vec3, vec3, vec3, vec3 = vec3(1.0f, 0.0f, 0.0f));
+    Triangle(vec3, vec3, vec3, vec4 = vec4(1.0f, 0.0f, 0.0f, 1.0f));
     int numVertices();
     int numColors();
     int numPoints();
 };
 
 struct Rectangle: public Shape{
-    Rectangle(vec3, vec3, vec3, vec3, vec3 = vec3(0.0f, 1.0f, 0.0f));
+    Rectangle(vec3, vec3, vec3, vec3, vec4 = vec4(0.0f, 1.0f, 0.0f, 1.0f));
 };
 
 struct Box: public Shape{
-    Box(vec3 center, double height, double width, double length, vec3 = vec3(1.0f, 0.2f, 0.2f));
+    Box(vec3 center, double height, double width, double length, vec4 = vec4(1.0f, 0.2f, 0.2f, 1.0f));
 };
 
 struct Boxes: public Shape{
-    Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec3* colors);
+    Boxes(int numBoxes, vec3* centers, double* heights, double* widths, double* lengths, vec4* colors);
 };
 
 struct House: public Shape{
@@ -69,4 +69,17 @@ struct WoodenDecoration: public Shape{
 struct Walls: public Shape{
     Walls();
 };
+
+struct WindowPane: public Shape{
+    WindowPane(vec3 center, double height, double width, double length, bool stained);
+};
+
+struct Roof: public Shape{
+    Roof();
+};
+
+struct Scene: public Shape{
+    Scene();
+};
+
 #endif /*SHAPES_H*/

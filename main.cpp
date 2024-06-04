@@ -110,7 +110,9 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_NEAREST);
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     // Here we create a VAO
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
@@ -133,7 +135,7 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
-    Shape *shp = new Walls();
+    Shape *shp = new Scene();
     do
     {
         float currentTime = glfwGetTime();
@@ -170,7 +172,7 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
         glVertexAttribPointer(
             1,        // location 1 in the vertex shader.
-            3,        // size
+            4,        // size
             GL_FLOAT, // type
             GL_FALSE, // normalized?
             0,        // stride
