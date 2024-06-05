@@ -33,6 +33,9 @@ struct Shape{
     vec4 TableColour = vec4(1, 1, 1, 1);
     vec4 SofaColourRed = vec4(1, 0, 0, 1);
     vec4 SofaColourYellow = vec4(1, 1, 0, 1);
+    vec4 ColourBlack = vec4(0, 0, 0, 1);
+    vec4 ColourSilver = vec4(0.75, 0.75, 0.75, 1);
+    vec4 DarkGrey = vec4(0.2, 0.2, 0.2, 1);
 
     ~Shape();
 
@@ -100,6 +103,10 @@ struct Scene: public Shape{
 
 struct Objects: public Shape{
     Objects();
+};
+
+struct Kiosk: public Shape{
+    Kiosk();
 };
 
 struct Cylinder: public Shape{
