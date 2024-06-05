@@ -425,11 +425,12 @@ WindowPane::WindowPane(vec3 center, double height, double width, double length, 
 
 Scene::Scene()
 {
-    numShapes = 3;
+    numShapes = 4;
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
     shapes[1] = new Objects();
     shapes[2] = new Roof();
+    shapes[3] = new Kiosk();
 }
 
 Objects::Objects()
@@ -664,6 +665,20 @@ Objects::Objects()
     shapes[109] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (1.8 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
 }
 
+Kiosk::Kiosk()
+{
+    numShapes = 5;
+    shapes = new Shape *[numShapes];
+
+    // Kiosk
+    shapes[0] = new Box(vec3(0, -1.6, 4.75), 0.75, 2.5, 0.75, DarkGrey);
+    shapes[1] = new Box(vec3(-0.29, -1.6, 5), 0.75, 0.75, 0.75, DarkGrey);
+    shapes[2] = new Box(vec3(-0.29, -1.4, 5), 0.4, 0.4, 0.6, ColourBlack);
+    shapes[3] = new Box(vec3(0.5, -1.69, 4.75), 0.2, 0.5, 0.75, ColourSilver);
+    shapes[4] = new Box(vec3(0.5, -1.54, 4.75), 0.7, 0.5, 0.75, glassColor);
+
+}
+
 Roof::Roof()
 {
     numShapes = 3 * 10 + 5;
@@ -725,3 +740,5 @@ Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, 
         shapes[2 * (i - startIndex) + 1] = new Triangle(vertices[nextIndex], vertices[numSidesOnBase + nextIndex], vertices[numSidesOnBase + i], color);
     }
 }
+
+
