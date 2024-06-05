@@ -4,6 +4,6 @@ in vec4 fragmentColor;
 
 void main()
 {
-	// Output color = red 
-	color = fragmentColor;
+    // Output color = red 
+    color = fragmentColor;
 }

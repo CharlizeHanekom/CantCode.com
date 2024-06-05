@@ -22,6 +22,7 @@ using namespace std;
 
 const GLuint SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.02f);
+
 const char *getError()
 {
     const char *errorDescription;
@@ -68,7 +69,7 @@ inline GLFWwindow *setUp()
     startUpGLEW();
     return window;
 }
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 {
     static double lastX = 0.0f;
     static double lastY = 0.0f;
@@ -89,7 +90,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     camera.mouseControl(xoffset, yoffset);
 }
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 {
     camera.scrollControl(yoffset);
 }
@@ -106,7 +107,7 @@ int main()
         throw;
     }
 
-    glClearColor(0.2, 0.2, 0.2, 0.2);
+    glClearColor(0, 0, 0, 0);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_NEAREST);
@@ -135,7 +136,9 @@ int main()
     double lastTime;
     lastTime = glfwGetTime();
 
+
     Shape *shp = new Scene();
+
     do
     {
         float currentTime = glfwGetTime();
@@ -148,7 +151,7 @@ int main()
         // Here we obtain the vertices and colors for the house as two dynamic arrays.
         GLfloat *vertices = shp->toVertexArray();
         GLfloat *colors = shp->toColorArray();
-        
+
         //  Here we bind the VBOs
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numVertices()]), vertices, GL_STATIC_DRAW);
@@ -159,25 +162,12 @@ int main()
         // Here we enable the VAO and populate it.
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glVertexAttribPointer(
-            0,        // location 0 in the vertex shader.
-            3,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glVertexAttribPointer(
-            1,        // location 1 in the vertex shader.
-            4,        // size
-            GL_FLOAT, // type
-            GL_FALSE, // normalized?
-            0,        // stride
-            (void *)0 // array buffer offset
-        );
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
         // Calculate the projection matrix
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
