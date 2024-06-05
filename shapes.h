@@ -14,6 +14,7 @@ using namespace std;
 
 struct Shape{
     vec3** vertices;
+    vec3** normals;
     vec4* colors;
     Shape** shapes;
     int numShapes;
@@ -23,10 +24,12 @@ struct Shape{
     virtual void applyMatrix(mat4x4);
     virtual GLfloat* toVertexArray();
     virtual GLfloat* toColorArray();
+    virtual GLfloat* toNormalArray();
     virtual int numPoints();
 
     virtual int numVertices();
     virtual int numColors();
+    virtual int numNormals();
 
     void drawCircle(float, float, float, int);
 };
@@ -36,6 +39,7 @@ struct Triangle: public Shape{
     int numVertices();
     int numColors();
     int numPoints();
+    int numNormals();
 };
 
 struct Rectangle: public Shape{

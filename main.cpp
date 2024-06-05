@@ -14,6 +14,7 @@
 #include "shader.hpp"
 #include "shapes.h"
 #include "camera.h"
+#include "light.h"
 
 #define timeDT std::chrono::_V2::steady_clock::time_point
 
@@ -22,6 +23,8 @@ using namespace std;
 
 const GLuint SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 2.5f, 0.02f);
+
+PointLight pointLight(glm::vec3(0.0f, 0.0f, 3.0f));
 
 const char *getError()
 {
@@ -113,17 +116,22 @@ int main()
     glDepthFunc(GL_NEAREST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     // Here we create a VAO
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
+    GLuint normalbuffer;
+    glGenBuffers(1, &normalbuffer);
 
     // This is needed for sticky keys
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
     // Here we compile and load the shaders. First we pass the vertex shader then the fragment shader.
     GLuint programID = LoadShaders("vertexShader.glsl", "fragmentShader.glsl");
+
+    // Get the location of the light position and color uniform variables in the shader
+    GLint lightPosLoc = glGetUniformLocation(programID, "lightPos");
+    GLint lightColorLoc = glGetUniformLocation(programID, "lightColor");
 
     timeDT lastChanged = chrono::steady_clock::now();
 
@@ -182,9 +190,12 @@ int main()
             rightCTRLPressed = false;
         }
 
+
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
+        glUniform3fv(lightPosLoc, 1, glm::value_ptr(pointLight.position));
+        glUniform3fv(lightColorLoc, 1, glm::value_ptr(pointLight.color));
         // Here we clear the color and depth buffer bits.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(programID);
@@ -192,6 +203,7 @@ int main()
         // Here we obtain the vertices and colors for the house as two dynamic arrays.
         GLfloat *vertices = shp->toVertexArray();
         GLfloat *colors = shp->toColorArray();
+        GLfloat* normals = shp->toNormalArray();
 
         //  Here we bind the VBOs
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -199,6 +211,9 @@ int main()
 
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numColors()]), colors, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat[shp->numNormals()]), normals, GL_STATIC_DRAW);
 
         // Here we enable the VAO and populate it.
         glEnableVertexAttribArray(0);
@@ -208,6 +223,10 @@ int main()
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
         // Calculate the projection matrix
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -222,7 +241,6 @@ int main()
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
-
         // Here we swap the buffers
         glfwSwapBuffers(window);
         glfwPollEvents();

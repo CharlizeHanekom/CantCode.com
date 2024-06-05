@@ -74,7 +74,22 @@ GLfloat *Shape::toColorArray()
     }
     return result;
 }
-
+GLfloat* Shape::toNormalArray() {
+    GLfloat* normalArray = new GLfloat[numVertices() * 3];
+    for (int i = 0; i < numVertices(); i++) {
+        normalArray[i * 3] = (*normals[i]).x;
+        normalArray[i * 3 + 1] = (*normals[i]).y;
+        normalArray[i * 3 + 2] = (*normals[i]).z;
+    }
+    return normalArray;
+}
+int Shape::numNormals() {
+    int count = 0;
+    for (int i = 0; i < numShapes; i++) {
+        count += shapes[i]->numNormals();
+    }
+    return count;
+}
 void Shape::applyMatrix(mat4x4 m)
 {
     if (numShapes > 0)
@@ -123,6 +138,13 @@ Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec4 color)
     vertices[0] = new vec3(point1);
     vertices[1] = new vec3(point2);
     vertices[2] = new vec3(point3);
+    normals = new vec3 *[n];
+    vec3 edge1 = point2 - point1;
+    vec3 edge2 = point3 - point1;
+    vec3 normal = normalize(cross(edge1, edge2));
+    normals[0] = new vec3(normal);
+    normals[1] = new vec3(normal);
+    normals[2] = new vec3(normal);
 
     colors = new vec4[n];
     for (int i = 0; i < n; i++)
@@ -145,7 +167,10 @@ int Triangle::numPoints()
 {
     return 3;
 }
-
+int Triangle::numNormals() 
+{
+    return 3;
+}
 Rectangle::Rectangle(vec3 ul, vec3 ur, vec3 ll, vec3 lr, vec4 color)
 {
     numShapes = 2;
