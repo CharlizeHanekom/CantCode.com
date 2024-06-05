@@ -107,7 +107,7 @@ int main()
         throw;
     }
 
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.4, 0.4, 0.6, 1.0);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_NEAREST);

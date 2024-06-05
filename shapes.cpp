@@ -377,40 +377,14 @@ Door::Door(vec3 center)
     shapes[3] = new Box(vec3(center.x, center.y + 0.27, center.z), frameThickness, 1.5 + 2 * frameThickness, frameDepth, frameColor);
 }
 
-WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
-{
-    numShapes = 3*10 + 5;
-    shapes = new Shape *[numShapes];
-
-    //panes
-    double x = 0;
-    double y = 0.0;
-    double z = 15;
-    int index = 0;
-    for (int i = 0; i < 10; i++) {
-        shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
-    }
-
-    //frames
-    x = -1;
-    y = 2;
-    z = 0;
-    shapes[index++] = new Box(vec3(x,y,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-}
-
 Scene::Scene()
 {
-    numShapes = 3;
+    numShapes = 4;
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
     shapes[1] = new Objects();
     shapes[2] = new Roof();
+    shapes[3] = new Floor();
 }
 
 Objects::Objects()
@@ -668,7 +642,7 @@ Roof::Roof()
     int index = 0;
     for (int i = 0; i < 10; i++) {
         shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
+        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.4,0.4,0.4,0.4));
         shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
     }
 
@@ -715,4 +689,10 @@ Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, 
         shapes[2 * (i - startIndex)] = new Triangle(vertices[i], vertices[nextIndex], vertices[numSidesOnBase + i], color);
         shapes[2 * (i - startIndex) + 1] = new Triangle(vertices[nextIndex], vertices[numSidesOnBase + nextIndex], vertices[numSidesOnBase + i], color);
     }
+}
+
+Floor::Floor() {
+    numShapes = 1;
+    shapes = new Shape *[numShapes];
+    shapes[0] = new Rectangle(vec3(-4, -5.55, -16.5), vec3(4, -5.55, -16.5), vec3(-4, -5.55, 16.5), vec3(4, -5.55, 16.5), vec4(0.3,0.3,0.3,1.0));
 }
