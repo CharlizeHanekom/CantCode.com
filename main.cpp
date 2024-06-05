@@ -141,46 +141,13 @@ int main()
     bool rightCTRLPressed = false;
     bool dayTime = true;
 
+    bool tabPressed = false;
+
     Shape *shp = new Scene();
 
     do
     {
-        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !spacePressed)
-        {
-            if (wireframe)
-            {
-                wireframe = false;
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
-            else
-            {
-                wireframe = true;
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            }
-            spacePressed = true;
-        }
-        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
-        {
-            spacePressed = false;
-        }
-
-        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS && !rightCTRLPressed)
-        {
-            if (dayTime)
-            {
-                glClearColor(0.529, 0.808, 0.922, 1.0);
-            }
-            else
-            {
-                glClearColor(0.0, 0.0, 0.0, 0);
-            }
-            dayTime = !dayTime;
-            rightCTRLPressed = true;
-        }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE)
-        {
-            rightCTRLPressed = false;
-        }
+        
 
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
@@ -247,6 +214,52 @@ int main()
         keys[GLFW_KEY_U] = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
         keys[GLFW_KEY_O] = glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS;
         keys[GLFW_KEY_LEFT_SHIFT] = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS;
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !spacePressed)
+        {
+            if (wireframe)
+            {
+                wireframe = false;
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+            else
+            {
+                wireframe = true;
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            spacePressed = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
+        {
+            spacePressed = false;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS && !rightCTRLPressed)
+        {
+            if (dayTime)
+            {
+                glClearColor(0.529, 0.808, 0.922, 1.0);
+            }
+            else
+            {
+                glClearColor(0.0, 0.0, 0.0, 0);
+            }
+            dayTime = !dayTime;
+            rightCTRLPressed = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE)
+        {
+            rightCTRLPressed = false;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS && !tabPressed)
+        {
+            shp->invertColours();
+            tabPressed = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE)
+        {
+            tabPressed = false;
+        }
 
         camera.keyControl(keys, deltaTime);
         // Calculate the view matrix

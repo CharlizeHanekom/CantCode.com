@@ -18,6 +18,22 @@ struct Shape{
     Shape** shapes;
     int numShapes;
 
+    bool coloursInverted = false;
+
+    // Colours
+    vec4 frameColor = vec4(0.3, 0.3, 0.3,1);
+    vec4 DividerColour = vec4(1, 1, 1, 1);
+    vec4 CubicleColour = vec4(0.2, 0.2, 0.2, 1);
+    vec4 CubicleSeatColour = vec4(1, 1, 0, 1);
+    vec4 CubicleWoodColour = vec4(0.45, 0.25, 0.0, 1);
+    vec4 PlantColour = vec4(0, 1, 0, 1);
+    vec4 PlantPotColour = vec4(0.5, 0.5, 0.5, 1);
+    vec4 ChairColour = vec4(0.5, 0.5, 0.5, 1);
+    vec4 SofaColourBlue = vec4(0, 0, 1, 1);
+    vec4 TableColour = vec4(1, 1, 1, 1);
+    vec4 SofaColourRed = vec4(1, 0, 0, 1);
+    vec4 SofaColourYellow = vec4(1, 1, 0, 1);
+
     ~Shape();
 
     virtual void applyMatrix(mat4x4);
@@ -28,7 +44,9 @@ struct Shape{
     virtual int numVertices();
     virtual int numColors();
 
-    void drawCircle(float, float, float, int);
+    void invertColours();
+
+
 };
 
 struct Triangle: public Shape{

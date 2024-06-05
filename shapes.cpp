@@ -113,6 +113,25 @@ int Shape::numColors()
     return count;
 }
 
+void Shape::invertColours()
+{
+
+    if (numShapes > 0)
+    {
+        for (int i = 0; i < numShapes; i++)
+        {
+            shapes[i]->invertColours();
+        }
+    }
+    else
+    {
+        for (int i = 0; i < numPoints(); i++)
+        {
+            colors[i] = vec4(1 - colors[i].r, 1 - colors[i].g, 1 - colors[i].b, colors[i].a);
+        }
+    }
+}
+
 Triangle::Triangle(vec3 point1, vec3 point2, vec3 point3, vec4 color)
 {
     numShapes = 0;
@@ -253,14 +272,14 @@ EastWall::EastWall(vec3 center)
     shapes[2] = new Box(center, 11, middleWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Left walls
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y + 0.25, center.z), 9.5, sideWidth, 0.01, glassColor);
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y + 0.3, center.z), 10, sideWidth, 0.01, glassColor);
     shapes[1] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 
     // Right walls
-    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y + 0.25, center.z), 9.5, sideWidth, 0.01, glassColor);
+    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y + 0.3, center.z), 10, sideWidth, 0.01, glassColor);
     shapes[4] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 
-        //Doors
+    // Doors
     shapes[5] = new Door(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y - 1.6, center.z));
     shapes[6] = new Door(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y - 1.6, center.z));
 }
@@ -310,10 +329,10 @@ WestWall::WestWall(vec3 center)
     shapes[1] = new Box(center, 11, middleWidth, 0.01, glassColor);
 
     // Left wall
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth * 1.18, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 
     // Right wall
-    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
+    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth * 1.18, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 }
 WoodenDecoration::WoodenDecoration(vec3 center)
 {
@@ -343,8 +362,8 @@ Walls::Walls()
     vec3 wallCenters[4] = {
         vec3(1.3, 0, 0),  // North Wall
         vec3(-1.3, 0, 0), // South Wall
-        vec3(0, 0, -5.5),  // East Wall
-        vec3(0, 0, 5.5)  // West Wall
+        vec3(0, 0, -5.5), // East Wall
+        vec3(0, 0, 5.5)   // West Wall
     };
 
     numShapes = 4;
@@ -365,7 +384,6 @@ Door::Door(vec3 center)
     // Frame
     float frameThickness = 0.1;
     float frameDepth = 0.3;
-    vec4 frameColor(0.3, 0.3, 0.3,1);
 
     // Left side of the frame
     shapes[1] = new Box(vec3(center.x - 0.21, center.y, center.z), 1.6, frameThickness, frameDepth, frameColor);
@@ -379,29 +397,30 @@ Door::Door(vec3 center)
 
 WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
 {
-    numShapes = 3*10 + 5;
+    numShapes = 3 * 10 + 5;
     shapes = new Shape *[numShapes];
 
-    //panes
+    // panes
     double x = 0;
     double y = 0.0;
     double z = 15;
     int index = 0;
-    for (int i = 0; i < 10; i++) {
-        shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+    for (int i = 0; i < 10; i++)
+    {
+        shapes[index++] = new Cylinder(vec3(x, y, z), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
+        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 1, 6.8, vec4(0.2, 0.2, 0.2, 0.2));
+        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
     }
 
-    //frames
+    // frames
     x = -1;
     y = 2;
     z = 0;
-    shapes[index++] = new Box(vec3(x,y,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x, y, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y += 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y += 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
 }
 
 Scene::Scene()
@@ -415,17 +434,6 @@ Scene::Scene()
 
 Objects::Objects()
 {
-    vec4 DividerColour = vec4(1, 1, 1, 1);
-    vec4 CubicleColour = vec4(0.2, 0.2, 0.2, 1);
-    vec4 CubicleSeatColour = vec4(1, 1, 0, 1);
-    vec4 CubicleWoodColour = vec4(0.45, 0.25, 0.0, 1);
-    vec4 PlantColour = vec4(0, 1, 0, 1);
-    vec4 PlantPotColour = vec4(0.5, 0.5, 0.5, 1);
-    vec4 ChairColour = vec4(0.5, 0.5, 0.5, 1);
-    vec4 SofaColourBlue = vec4(0, 0, 1, 1);
-    vec4 TableColour = vec4(1, 1, 1, 1);
-    vec4 SofaColourRed = vec4(1, 0, 0, 1);
-    vec4 SofaColourYellow = vec4(1, 1, 0, 1);
 
     numShapes = 110;
     shapes = new Shape *[numShapes];
@@ -658,38 +666,39 @@ Objects::Objects()
 
 Roof::Roof()
 {
-    numShapes = 3*10 + 5;
+    numShapes = 3 * 10 + 5;
     shapes = new Shape *[numShapes];
 
-    //panes
+    // panes
     double x = 0;
     double y = 0.0;
     double z = 15;
     int index = 0;
-    for (int i = 0; i < 10; i++) {
-        shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
-        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+    for (int i = 0; i < 10; i++)
+    {
+        shapes[index++] = new Cylinder(vec3(x, y, z), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
+        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 1, 6.8, vec4(0.2, 0.2, 0.2, 0.2));
+        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
     }
 
-    //frames
+    // frames
     x = -1;
     y = 2;
     z = 0;
-    shapes[index++] = new Box(vec3(x,y,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y+=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
-    shapes[index++] = new Box(vec3(x+=0.5,y-=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x, y, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y += 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y += 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
+    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
 }
 
 Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec4 color)
 {
     float angle = 2 * M_PI / numSidesOnBase;
-    vec3 *vertices = new vec3[2*numSidesOnBase];
+    vec3 *vertices = new vec3[2 * numSidesOnBase];
 
     int startIndex = numSidesOnBase * 0.575 / 4;
-    int endIndex = numSidesOnBase * 1.575 /4;
+    int endIndex = numSidesOnBase * 1.575 / 4;
 
     for (int i = startIndex; i < endIndex; i++)
     {
