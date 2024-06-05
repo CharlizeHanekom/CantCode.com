@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.hpp"
-#include "shapesOpaque.h"
+#include "shapes.h"
 #include "camera.h"
 
 #define timeDT std::chrono::_V2::steady_clock::time_point
@@ -138,6 +138,7 @@ int main()
 
 
     Shape *shp = new Scene();
+
     do
     {
         float currentTime = glfwGetTime();
@@ -165,7 +166,7 @@ int main()
 
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
         // Calculate the projection matrix
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);

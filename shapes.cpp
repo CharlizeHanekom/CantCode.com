@@ -218,7 +218,7 @@ NorthWall::NorthWall(vec3 center)
     float pillarWidth = 0.4;
 
     // Middle piece
-    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9,1));
+    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9, 1));
 
     // Top pieces
     shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, vec4(0, 0.6, 1, 0.1));
@@ -230,7 +230,8 @@ NorthWall::NorthWall(vec3 center)
 
     // Pillars
     float pillarSpacing = totalLength / 50;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 15; i++)
+    {
         float pillarZ = center.z - totalLength / 6 + pillarSpacing * (i + 1);
         shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec4(0.8, 0.8, 0.8, 1));
     }
@@ -246,7 +247,7 @@ EastWall::EastWall(vec3 center)
     float sideWidth = totalWidth / 6;
 
     // Middle wall
-    shapes[2] = new Box(center, 11, middleWidth, outWidth, vec4(0.4, 0.4, 0.4,1));
+    shapes[2] = new Box(center, 11, middleWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Left walls
     shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y, center.z), 11, sideWidth, 0.01, vec4(0, 0.3, 1, 0.1));
@@ -282,7 +283,8 @@ SouthWall::SouthWall(vec3 center)
 
     // Pillars
     float pillarSpacing = totalLength / 50;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 15; i++)
+    {
         float pillarZ = center.z - totalLength / 6 + pillarSpacing * (i + 1);
         shapes[5 + i] = new Box(vec3(center.x, center.y, pillarZ), pillarHeight, outWidth - 0.5, pillarWidth, vec4(0.8, 0.8, 0.8, 1));
     }
@@ -301,10 +303,10 @@ WestWall::WestWall(vec3 center)
     shapes[1] = new Box(center, 11, middleWidth, 0.01, vec4(0, 0.3, 1, 0.1));
 
     // Left wall
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth * 1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Right wall
-    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
+    shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth * 1.18, center.y, center.z), 11, sideWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 }
 
 WoodenDecoration::WoodenDecoration(vec3 center)
@@ -322,7 +324,8 @@ WoodenDecoration::WoodenDecoration(vec3 center)
     float waveAmplitude = 2;
     float waveFrequency = 2 * M_PI / totalLength;
 
-    for (int i = 0; i < numShapes; i++) {
+    for (int i = 0; i < numShapes; i++)
+    {
         float x = center.x - totalLength / 2 + prismSpacing * i;
         float height = baseHeight + waveAmplitude * (1 + std::sin(waveFrequency * x));
         float y = center.y;
@@ -356,10 +359,13 @@ WindowPane::WindowPane(vec3 center, double height, double width, double length, 
 {
     numShapes = 5;
     shapes = new Shape *[numShapes];
-    if (!stained) {
+    if (!stained)
+    {
         shapes[0] = new Box(center, height, width, length, vec4(1, 1, 1, 0.3));
-    } else {
-        shapes[0] = new Box(center,height, width, length, vec4(1, 1, 0, 0.5));
+    }
+    else
+    {
+        shapes[0] = new Box(center, height, width, length, vec4(1, 1, 0, 0.5));
     }
 
     vec3 cR = center + vec3(0.8, 0.0, 0.00);
@@ -367,9 +373,9 @@ WindowPane::WindowPane(vec3 center, double height, double width, double length, 
     vec3 cN = center + vec3(0.0, 0.0, 0.25);
     vec3 cF = center + vec3(0.0, 0.0, -0.25);
 
-    //Frame
-    shapes[1] = new Box(cR, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
-    shapes[2] = new Box(cL, 0.02, 0.02, length+0.04, vec4(0.3, 0.3, 0.3, 1));
+    // Frame
+    shapes[1] = new Box(cR, 0.02, 0.02, length + 0.04, vec4(0.3, 0.3, 0.3, 1));
+    shapes[2] = new Box(cL, 0.02, 0.02, length + 0.04, vec4(0.3, 0.3, 0.3, 1));
     shapes[3] = new Box(cN, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
     shapes[4] = new Box(cF, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
 }
@@ -378,7 +384,7 @@ Roof::Roof()
 {
     numShapes = 4;
     shapes = new Shape *[numShapes];
-    
+
     double height = 0.2;
     double width = 1.6;
     double length = 0.51;
@@ -399,10 +405,254 @@ Roof::Roof()
     shapes[3] = new WindowPane(centers[3], height, width, length, false);
 }
 
-Scene::Scene() 
+Scene::Scene()
 {
-    numShapes = 1;
+    numShapes = 2;
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
     // shapes[1] = new Roof();
+    shapes[1] = new Objects();
+}
+
+Objects::Objects()
+{
+    vec4 DividerColour = vec4(1, 1, 1, 1);
+    vec4 CubicleColour = vec4(0.2, 0.2, 0.2, 1);
+    vec4 CubicleSeatColour = vec4(1, 1, 0, 1);
+    vec4 CubicleWoodColour = vec4(0.45, 0.25, 0.0, 1);
+    vec4 PlantColour = vec4(0, 1, 0, 1);
+    vec4 PlantPotColour = vec4(0.5, 0.5, 0.5, 1);
+    vec4 ChairColour = vec4(0.5, 0.5, 0.5, 1);
+    vec4 SofaColourBlue = vec4(0, 0, 1, 1);
+    vec4 TableColour = vec4(1, 1, 1, 1);
+    vec4 SofaColourRed = vec4(1, 0, 0, 1);
+    vec4 SofaColourYellow = vec4(1, 1, 0, 1);
+
+    numShapes = 110;
+    shapes = new Shape *[numShapes];
+
+    /**
+     * The following object is the table near left to the coffee shop
+     */
+    float startingPosX = -0.5;
+    float startingPosZ = 4;
+    shapes[0] = new Box(vec3(startingPosX, -1.6, startingPosZ), 0.1, 0.75, 0.75, TableColour);
+    shapes[1] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.1, 0.1, TableColour);
+
+    /**
+     * The following object is the table near middle to the coffee shop
+     */
+    startingPosX = 0;
+    startingPosZ = 4.2;
+    shapes[2] = new Box(vec3(startingPosX, -1.6, startingPosZ), 0.1, 0.75, 0.75, TableColour);
+    shapes[3] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.1, 0.1, TableColour);
+
+    /**
+     * The following objects are the dividers
+     */
+
+    // middle 2
+    shapes[4] = new Box(vec3(0, -1.5, -1), 2, 2.5, 0.05, DividerColour);
+    shapes[5] = new Box(vec3(0, -1.5, 1), 2, 2.5, 0.05, DividerColour);
+
+    // far left
+    shapes[6] = new Box(vec3(-0.5, -1.5, -4), 2, 1.75, 0.05, DividerColour);
+
+    // far right
+    shapes[7] = new Box(vec3(0, -1.5, -4.5), 2, 0.05, 1.75, DividerColour);
+    shapes[8] = new Box(vec3(0, -1.5, -3.5), 2, 0.05, 1.75, DividerColour);
+
+    // Near left
+    shapes[9] = new Box(vec3(-0.2, -1.5, 2.5), 2, 0.05, 1.75, DividerColour);
+
+    /**
+     * The following objects is the set of 4 cubicles in the near left corner
+     */
+
+    startingPosX = -0.23;
+    startingPosZ = 2.5;
+    shapes[10] = new Box(vec3(startingPosX, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[11] = new Box(vec3(startingPosX - 0.3, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[12] = new Box(vec3(startingPosX - 0.325, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[13] = new Box(vec3(startingPosX - 0.325 - 0.3, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[14] = new Box(vec3(startingPosX - 0.325 - 0.15, -1.6, startingPosZ), 1.5, 0.9, 0.05, CubicleColour);
+    shapes[15] = new Box(vec3(startingPosX - 0.15, -1.6, startingPosZ), 1.5, 0.9, 0.05, CubicleColour);
+
+    shapes[16] = new Box(vec3(startingPosX - 0.1, -1.725, startingPosZ), 0.75, 0.6, 0.15, CubicleSeatColour);
+    shapes[17] = new Box(vec3(startingPosX - 0.1, -1.75, startingPosZ), 0.3, 0.6, 1.19, CubicleSeatColour);
+    shapes[18] = new Box(vec3(startingPosX - 0.2475, -1.75, startingPosZ), 0.3, 0.29, 1.19, CubicleWoodColour);
+
+    shapes[19] = new Box(vec3(startingPosX - 0.1 - 0.325, -1.725, startingPosZ), 0.75, 0.6, 0.15, CubicleSeatColour);
+    shapes[20] = new Box(vec3(startingPosX - 0.1 - 0.325, -1.75, startingPosZ), 0.3, 0.6, 1.19, CubicleSeatColour);
+    shapes[21] = new Box(vec3(startingPosX - 0.2475 - 0.325, -1.75, startingPosZ), 0.3, 0.29, 1.19, CubicleWoodColour);
+
+    /**
+     * The following objects is the set of 4 cubicles in the near left corner
+     */
+    startingPosX = 0.65;
+    startingPosZ = -4.5;
+    shapes[22] = new Box(vec3(startingPosX, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[23] = new Box(vec3(startingPosX - 0.3, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[24] = new Box(vec3(startingPosX - 0.325, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[25] = new Box(vec3(startingPosX - 0.325 - 0.3, -1.6, startingPosZ), 1.5, 0.05, 1.2, CubicleColour);
+    shapes[26] = new Box(vec3(startingPosX - 0.325 - 0.15, -1.6, startingPosZ), 1.5, 0.9, 0.05, CubicleColour);
+    shapes[27] = new Box(vec3(startingPosX - 0.15, -1.6, startingPosZ), 1.5, 0.9, 0.05, CubicleColour);
+
+    shapes[28] = new Box(vec3(startingPosX - 0.1, -1.725, startingPosZ), 0.75, 0.6, 0.15, CubicleSeatColour);
+    shapes[29] = new Box(vec3(startingPosX - 0.1, -1.75, startingPosZ), 0.3, 0.6, 1.19, CubicleSeatColour);
+    shapes[30] = new Box(vec3(startingPosX - 0.2475, -1.75, startingPosZ), 0.3, 0.29, 1.19, CubicleWoodColour);
+
+    shapes[31] = new Box(vec3(startingPosX - 0.1 - 0.325, -1.725, startingPosZ), 0.75, 0.6, 0.15, CubicleSeatColour);
+    shapes[32] = new Box(vec3(startingPosX - 0.1 - 0.325, -1.75, startingPosZ), 0.3, 0.6, 1.19, CubicleSeatColour);
+    shapes[33] = new Box(vec3(startingPosX - 0.2475 - 0.325, -1.75, startingPosZ), 0.3, 0.29, 1.19, CubicleWoodColour);
+
+    /**
+     * The following objects is the plant
+     */
+
+    startingPosX = -0.15;
+    startingPosZ = 2.7;
+    shapes[34] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.25, 0.5, PlantPotColour);
+
+    shapes[35] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[36] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ - 0.05), 0.1, 0.05, 0.05, PlantColour);
+    shapes[37] = new Box(vec3(startingPosX, -1.6, startingPosZ - 0.04), 0.4, 0.05, 0.05, PlantColour);
+    shapes[38] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.03), 0.65, 0.05, 0.05, PlantColour);
+    shapes[39] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ - 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[40] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[41] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ + 0.05), 0.12, 0.05, 0.05, PlantColour);
+    shapes[42] = new Box(vec3(startingPosX, -1.6, startingPosZ + 0.04), 0.5, 0.05, 0.05, PlantColour);
+    shapes[43] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ + 0.03), 0.3, 0.05, 0.05, PlantColour);
+    shapes[44] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    /**
+     * Another plant
+     */
+    startingPosX = -0.15;
+    startingPosZ = 2.3;
+    shapes[45] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[46] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ - 0.05), 0.1, 0.05, 0.05, PlantColour);
+    shapes[47] = new Box(vec3(startingPosX, -1.6, startingPosZ - 0.04), 0.4, 0.05, 0.05, PlantColour);
+    shapes[48] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.03), 0.65, 0.05, 0.05, PlantColour);
+    shapes[49] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ - 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[50] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[51] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ + 0.05), 0.12, 0.05, 0.05, PlantColour);
+    shapes[52] = new Box(vec3(startingPosX, -1.6, startingPosZ + 0.04), 0.5, 0.05, 0.05, PlantColour);
+    shapes[53] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ + 0.03), 0.3, 0.05, 0.05, PlantColour);
+    shapes[54] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[55] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.25, 0.5, PlantPotColour);
+
+    /**
+     * Another plant #2
+     */
+    startingPosX = 0.05;
+    startingPosZ = -3.7;
+    shapes[56] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[57] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ - 0.05), 0.1, 0.05, 0.05, PlantColour);
+    shapes[58] = new Box(vec3(startingPosX, -1.6, startingPosZ - 0.04), 0.4, 0.05, 0.05, PlantColour);
+    shapes[59] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.03), 0.65, 0.05, 0.05, PlantColour);
+    shapes[60] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ - 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[61] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[62] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ + 0.05), 0.12, 0.05, 0.05, PlantColour);
+    shapes[63] = new Box(vec3(startingPosX, -1.6, startingPosZ + 0.04), 0.5, 0.05, 0.05, PlantColour);
+    shapes[64] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ + 0.03), 0.3, 0.05, 0.05, PlantColour);
+    shapes[65] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[66] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.25, 0.5, PlantPotColour);
+
+    /**
+     * Another plant #3
+     */
+    startingPosX = 0.05;
+    startingPosZ = -3.3;
+    shapes[67] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[68] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ - 0.05), 0.1, 0.05, 0.05, PlantColour);
+    shapes[69] = new Box(vec3(startingPosX, -1.6, startingPosZ - 0.04), 0.4, 0.05, 0.05, PlantColour);
+    shapes[70] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ - 0.03), 0.65, 0.05, 0.05, PlantColour);
+    shapes[71] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ - 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[72] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.06), 0.75, 0.05, 0.05, PlantColour);
+    shapes[73] = new Box(vec3(startingPosX - 0.02, -1.6, startingPosZ + 0.05), 0.12, 0.05, 0.05, PlantColour);
+    shapes[74] = new Box(vec3(startingPosX, -1.6, startingPosZ + 0.04), 0.5, 0.05, 0.05, PlantColour);
+    shapes[75] = new Box(vec3(startingPosX + 0.01, -1.6, startingPosZ + 0.03), 0.3, 0.05, 0.05, PlantColour);
+    shapes[76] = new Box(vec3(startingPosX - 0.01, -1.6, startingPosZ + 0.02), 0.5, 0.05, 0.05, PlantColour);
+
+    shapes[77] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.25, 0.5, PlantPotColour);
+
+    /**
+     * The following objects is the set of 2 chairs at the far left
+     */
+
+    startingPosX = -0.6;
+    startingPosZ = -3.95;
+    float gap = 0.21;
+    shapes[78] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[79] = new Box(vec3(startingPosX, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[80] = new Box(vec3(startingPosX + gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[81] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+
+    /**
+     * The following objects is the set of 4 chairs at the middle left
+     */
+    startingPosX = -0.7;
+    startingPosZ = -2.8;
+    shapes[82] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[83] = new Box(vec3(startingPosX, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[84] = new Box(vec3(startingPosX + gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[85] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[86] = new Box(vec3(startingPosX + 2 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[87] = new Box(vec3(startingPosX + 2 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[88] = new Box(vec3(startingPosX + 3 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[89] = new Box(vec3(startingPosX + 3 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+
+    /**
+     * The following objects is the cluster of blue sofas
+     */
+
+    startingPosX = -0.75;
+    startingPosZ = -2.2;
+    shapes[90] = new Box(vec3(startingPosX, -1.8075, startingPosZ), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[91] = new Box(vec3(startingPosX - (0.5 * gap), -1.8075, startingPosZ + (2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[92] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (2.5 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[93] = new Box(vec3(startingPosX + (2 * gap), -1.8075, startingPosZ + (2.5 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[94] = new Box(vec3(startingPosX + (3 * gap), -1.8075, startingPosZ + (2.3 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[95] = new Box(vec3(startingPosX + (1.75 * gap), -1.8075, startingPosZ - (0.3 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[96] = new Box(vec3(startingPosX + (3 * gap), -1.8075, startingPosZ - (0.2 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+
+    /**
+     * This object will render the table in the middle of the sofas
+     */
+
+    startingPosX = -0.75;
+    startingPosZ = -2.2;
+    shapes[97] = new Box(vec3(startingPosX + (2 * gap), -1.725, startingPosZ + (gap)), 0.1, 2, 0.6, TableColour);
+
+    /**
+     * The following objects is the set of 4 chairs at the middle infrornt of the dividerr
+     */
+    startingPosX = -0.3;
+    startingPosZ = -0.95;
+    shapes[98] = new Box(vec3(startingPosX, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[99] = new Box(vec3(startingPosX, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[100] = new Box(vec3(startingPosX + gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[101] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[102] = new Box(vec3(startingPosX + 2 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[103] = new Box(vec3(startingPosX + 2 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+    shapes[104] = new Box(vec3(startingPosX + 3 * gap, -1.725, startingPosZ), 0.75, 0.6, 0.2, ChairColour);
+    shapes[105] = new Box(vec3(startingPosX + 3 * gap, -1.8075, startingPosZ + 0.1), 0.25, 0.6, 0.5, ChairColour);
+
+    /**
+     * The following objects is the set of 2 csofas and a small table at the middle left
+     */
+
+    startingPosX = -1.1;
+    startingPosZ = 0.0;
+    shapes[106] = new Box(vec3(startingPosX, -1.8075, startingPosZ), 0.25, 0.5, 0.5, SofaColourBlue);
+    shapes[107] = new Box(vec3(startingPosX, -1.8075, startingPosZ + (2.2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
+    shapes[108] = new Box(vec3(startingPosX, -1.725, startingPosZ + (gap)), 0.1, 0.8, 0.8, TableColour);
+    shapes[109] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (1.8 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
 }

@@ -81,4 +81,8 @@ struct Scene: public Shape{
     Scene();
 };
 
+struct Objects: public Shape{
+    Objects();
+};
+
 #endif /*SHAPES_H*/
