@@ -388,7 +388,7 @@ Scene::Scene()
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
     shapes[1] = new Objects();
-    shapes[1] = new Roof();
+    shapes[2] = new Roof();
 }
 
 Objects::Objects()
@@ -632,6 +632,33 @@ Objects::Objects()
     shapes[107] = new Box(vec3(startingPosX, -1.8075, startingPosZ + (2.2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
     shapes[108] = new Box(vec3(startingPosX, -1.725, startingPosZ + (gap)), 0.1, 0.8, 0.8, TableColour);
     shapes[109] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (1.8 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+}
+
+Roof::Roof()
+{
+    numShapes = 3*10 + 5;
+    shapes = new Shape *[numShapes];
+
+    //panes
+    double x = 0;
+    double y = 0.0;
+    double z = 15;
+    int index = 0;
+    for (int i = 0; i < 10; i++) {
+        shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
+        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+    }
+
+    //frames
+    x = -1;
+    y = 2;
+    z = 0;
+    shapes[index++] = new Box(vec3(x,y,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y+=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y+=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y-=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y-=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
 }
 
 Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec4 color)
