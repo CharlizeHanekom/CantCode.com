@@ -357,61 +357,38 @@ Door::Door(vec3 center)
 }
 WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
 {
-    numShapes = 5;
-    shapes = new Shape *[numShapes];
-    if (!stained)
-    {
-        shapes[0] = new Box(center, height, width, length, vec4(1, 1, 1, 0.3));
-    }
-    else
-    {
-        shapes[0] = new Box(center, height, width, length, vec4(1, 1, 0, 0.5));
-    }
-
-    vec3 cR = center + vec3(0.8, 0.0, 0.00);
-    vec3 cL = center + vec3(-0.8, 0.0, 0.00);
-    vec3 cN = center + vec3(0.0, 0.0, 0.25);
-    vec3 cF = center + vec3(0.0, 0.0, -0.25);
-
-    // Frame
-    shapes[1] = new Box(cR, 0.02, 0.02, length + 0.04, vec4(0.3, 0.3, 0.3, 1));
-    shapes[2] = new Box(cL, 0.02, 0.02, length + 0.04, vec4(0.3, 0.3, 0.3, 1));
-    shapes[3] = new Box(cN, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
-    shapes[4] = new Box(cF, 0.02, width, 0.02, vec4(0.3, 0.3, 0.3, 1));
-}
-
-Roof::Roof()
-{
-    numShapes = 4;
+    numShapes = 3*10 + 5;
     shapes = new Shape *[numShapes];
 
-    double height = 0.2;
-    double width = 1.6;
-    double length = 0.51;
+    //panes
+    double x = 0;
+    double y = 0.0;
+    double z = 15;
+    int index = 0;
+    for (int i = 0; i < 10; i++) {
+        shapes[index++] = new Cylinder(vec3(x,y,z), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 1, 6.8, vec4(0.2,0.2,0.2,0.2));
+        shapes[index++] = new Cylinder(vec3(x,y,z-=1.5), 50, 2, 6.8, vec4(0.5,0.5,0.0,0.7));
+    }
 
-    vec3 centers[4] = {
-        vec3(0, 0, 0),
-        vec3(-0.5, 0, 0),
-        vec3(-1.0, 0, 0),
-        vec3(-1.5, 0, 0)};
-
-    vec4 colors[2] = {
-        vec4(0, 0, 1, 1),
-        vec4(1, 0, 0, 1)};
-
-    shapes[0] = new WindowPane(centers[0], height, width, length, true);
-    shapes[1] = new WindowPane(centers[1], height, width, length, true);
-    shapes[2] = new WindowPane(centers[2], height, width, length, false);
-    shapes[3] = new WindowPane(centers[3], height, width, length, false);
+    //frames
+    x = -1;
+    y = 2;
+    z = 0;
+    shapes[index++] = new Box(vec3(x,y,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y+=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y+=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y-=0.05,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
+    shapes[index++] = new Box(vec3(x+=0.5,y-=0.2,z), 0.05, 0.05, 32, vec4(0.3,0.3,0.3,1.0));
 }
 
 Scene::Scene()
 {
-    numShapes = 2;
+    numShapes = 3;
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
-    // shapes[1] = new Roof();
     shapes[1] = new Objects();
+    shapes[1] = new Roof();
 }
 
 Objects::Objects()
@@ -655,4 +632,38 @@ Objects::Objects()
     shapes[107] = new Box(vec3(startingPosX, -1.8075, startingPosZ + (2.2 * gap)), 0.25, 0.5, 0.5, SofaColourYellow);
     shapes[108] = new Box(vec3(startingPosX, -1.725, startingPosZ + (gap)), 0.1, 0.8, 0.8, TableColour);
     shapes[109] = new Box(vec3(startingPosX + gap, -1.8075, startingPosZ + (1.8 * gap)), 0.25, 0.5, 0.5, SofaColourBlue);
+}
+
+Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec4 color)
+{
+    float angle = 2 * M_PI / numSidesOnBase;
+    vec3 *vertices = new vec3[2*numSidesOnBase];
+
+    int startIndex = numSidesOnBase * 0.575 / 4;
+    int endIndex = numSidesOnBase * 1.575 /4;
+
+    for (int i = startIndex; i < endIndex; i++)
+    {
+        float x = center.x + radius * cos(i * angle);
+        float y = center.y + radius * sin(i * angle);
+        float z = center.z + height / 2;
+        vertices[i] = vec3(x, y, z);
+    }
+
+    for (int i = startIndex; i < endIndex; i++)
+    {
+        float x = center.x + radius * cos(i * angle);
+        float y = center.y + radius * sin(i * angle);
+        float z = center.z - height / 2;
+        vertices[numSidesOnBase + i] = vec3(x, y, z);
+    }
+
+    numShapes = 2 * (endIndex - startIndex - 1);
+    shapes = new Shape *[numShapes];
+    for (int i = startIndex; i < endIndex - 1; i++)
+    {
+        int nextIndex = i + 1;
+        shapes[2 * (i - startIndex)] = new Triangle(vertices[i], vertices[nextIndex], vertices[numSidesOnBase + i], color);
+        shapes[2 * (i - startIndex) + 1] = new Triangle(vertices[nextIndex], vertices[numSidesOnBase + nextIndex], vertices[numSidesOnBase + i], color);
+    }
 }

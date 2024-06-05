@@ -27,6 +27,8 @@ struct Shape{
 
     virtual int numVertices();
     virtual int numColors();
+
+    void drawCircle(float, float, float, int);
 };
 
 struct Triangle: public Shape{
@@ -83,6 +85,10 @@ struct Scene: public Shape{
 
 struct Objects: public Shape{
     Objects();
+};
+
+struct Cylinder: public Shape{
+    Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec4 color);
 };
 
 #endif /*SHAPES_H*/
