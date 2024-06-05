@@ -692,10 +692,53 @@ Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, 
 }
 
 Floor::Floor() {
-    numShapes = 2;
+    numShapes = 9;
     shapes = new Shape *[numShapes];
     shapes[0] = new Rectangle(vec3(-4, -5.55, -16.5), vec3(4, -5.55, -16.5), vec3(-4, -5.55, 16.5), vec3(4, -5.55, 16.5), vec4(0.3,0.3,0.3,1.0));
     shapes[1] = new Cutout();
+
+    vec3 ul[7] = {
+        vec3(-4, -5.54, -10.75),
+        vec3(-4, -5.54, -6.75),
+        vec3(-4, -5.54, -2.75),
+        vec3(-4, -5.54, 0.75),
+        vec3(-4, -5.54, 4.75),
+        vec3(-4, -5.54, 8.75),
+        vec3(-4, -5.54, 12.75)
+    };
+    vec3 ur[7] = {
+        vec3(4, -5.54, -10.75),
+        vec3(4, -5.54, -6.75),
+        vec3(4, -5.54, -2.75),
+        vec3(4, -5.54, 0.75),
+        vec3(4, -5.54, 4.75),
+        vec3(4, -5.54, 8.75),
+        vec3(4, -5.54, 12.75)
+    };
+    vec3 ll[7] = {
+        vec3(-4, -5.54, -11.25),
+        vec3(-4, -5.54, -7.25),
+        vec3(-4, -5.54, -3.25),
+        vec3(-4, -5.54, 1.25),
+        vec3(-4, -5.54, 5.25),
+        vec3(-4, -5.54, 9.25),
+        vec3(-4, -5.54, 13.25)
+    };
+    vec3 lr[7] =  {
+        vec3(4, -5.54, -11.25),
+        vec3(4, -5.54, -7.25),
+        vec3(4, -5.54, -3.25),
+        vec3(4, -5.54, 1.25),
+        vec3(4, -5.54, 5.25),
+        vec3(4, -5.54, 9.25),
+        vec3(4, -5.54, 13.25)
+    };
+
+    vec4 yellow = vec4(0.8,0.8,0.4,1.0);
+
+    for (int i = 0; i < 7; i++) {
+       shapes[2+i] = new Rectangle(ul[i], ur[i], ll[i], lr[i], yellow);
+    }
 }
 
 Cutout::Cutout() {
