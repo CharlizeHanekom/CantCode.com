@@ -395,41 +395,14 @@ Door::Door(vec3 center)
     shapes[3] = new Box(vec3(center.x, center.y + 0.27, center.z), frameThickness, 1.5 + 2 * frameThickness, frameDepth, frameColor);
 }
 
-WindowPane::WindowPane(vec3 center, double height, double width, double length, bool stained)
-{
-    numShapes = 3 * 10 + 5;
-    shapes = new Shape *[numShapes];
-
-    // panes
-    double x = 0;
-    double y = 0.0;
-    double z = 15;
-    int index = 0;
-    for (int i = 0; i < 10; i++)
-    {
-        shapes[index++] = new Cylinder(vec3(x, y, z), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
-        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 1, 6.8, vec4(0.2, 0.2, 0.2, 0.2));
-        shapes[index++] = new Cylinder(vec3(x, y, z -= 1.5), 50, 2, 6.8, vec4(0.5, 0.5, 0.0, 0.7));
-    }
-
-    // frames
-    x = -1;
-    y = 2;
-    z = 0;
-    shapes[index++] = new Box(vec3(x, y, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
-    shapes[index++] = new Box(vec3(x += 0.5, y += 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
-    shapes[index++] = new Box(vec3(x += 0.5, y += 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
-    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.05, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
-    shapes[index++] = new Box(vec3(x += 0.5, y -= 0.2, z), 0.05, 0.05, 32, vec4(0.3, 0.3, 0.3, 1.0));
-}
-
 Scene::Scene()
 {
-    numShapes = 3;
+    numShapes = 4;
     shapes = new Shape *[numShapes];
     shapes[0] = new Walls();
     shapes[1] = new Objects();
     shapes[2] = new Roof();
+    shapes[3] = new Floor();
 }
 
 Objects::Objects()
@@ -723,5 +696,115 @@ Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, 
         int nextIndex = i + 1;
         shapes[2 * (i - startIndex)] = new Triangle(vertices[i], vertices[nextIndex], vertices[numSidesOnBase + i], color);
         shapes[2 * (i - startIndex) + 1] = new Triangle(vertices[nextIndex], vertices[numSidesOnBase + nextIndex], vertices[numSidesOnBase + i], color);
+    }
+}
+
+Floor::Floor() {
+    numShapes = 9;
+    shapes = new Shape *[numShapes];
+    shapes[0] = new Rectangle(vec3(-4, -5.55, -16.5), vec3(4, -5.55, -16.5), vec3(-4, -5.55, 16.5), vec3(4, -5.55, 16.5), vec4(0.3,0.3,0.3,1.0));
+    shapes[1] = new Cutout();
+
+    vec3 ul[7] = {
+        vec3(-4, -5.54, -10.75),
+        vec3(-4, -5.54, -6.75),
+        vec3(-4, -5.54, -2.75),
+        vec3(-4, -5.54, 0.75),
+        vec3(-4, -5.54, 4.75),
+        vec3(-4, -5.54, 8.75),
+        vec3(-4, -5.54, 12.75)
+    };
+    vec3 ur[7] = {
+        vec3(4, -5.54, -10.75),
+        vec3(4, -5.54, -6.75),
+        vec3(4, -5.54, -2.75),
+        vec3(4, -5.54, 0.75),
+        vec3(4, -5.54, 4.75),
+        vec3(4, -5.54, 8.75),
+        vec3(4, -5.54, 12.75)
+    };
+    vec3 ll[7] = {
+        vec3(-4, -5.54, -11.25),
+        vec3(-4, -5.54, -7.25),
+        vec3(-4, -5.54, -3.25),
+        vec3(-4, -5.54, 1.25),
+        vec3(-4, -5.54, 5.25),
+        vec3(-4, -5.54, 9.25),
+        vec3(-4, -5.54, 13.25)
+    };
+    vec3 lr[7] =  {
+        vec3(4, -5.54, -11.25),
+        vec3(4, -5.54, -7.25),
+        vec3(4, -5.54, -3.25),
+        vec3(4, -5.54, 1.25),
+        vec3(4, -5.54, 5.25),
+        vec3(4, -5.54, 9.25),
+        vec3(4, -5.54, 13.25)
+    };
+
+    vec4 yellow = vec4(0.8,0.8,0.4,1.0);
+
+    for (int i = 0; i < 7; i++) {
+       shapes[2+i] = new Rectangle(ul[i], ur[i], ll[i], lr[i], yellow);
+    }
+}
+
+Cutout::Cutout() {
+    numShapes = 12;
+    shapes = new Shape *[numShapes];
+
+    vec3 ul[6] = {
+        vec3(2, -5.54, -10),
+        vec3(2, -5.54, -6),
+        vec3(2, -5.54, -2),
+        vec3(2, -5.54, 2),
+        vec3(2, -5.54, 6),
+        vec3(2, -5.54, 10)
+    };
+    vec3 ur[6] = {
+        vec3(4, -5.54, -10),
+        vec3(4, -5.54, -6),
+        vec3(4, -5.54, -2),
+        vec3(4, -5.54, 2),
+        vec3(4, -5.54, 6),
+        vec3(4, -5.54, 10)
+    };
+    vec3 ll[6] = {
+        vec3(2, -5.54, -8),
+        vec3(2, -5.54, -4),
+        vec3(2, -5.54, 0),
+        vec3(2, -5.54, 4),
+        vec3(2, -5.54, 8),
+        vec3(2, -5.54, 12)
+    };
+    vec3 lr[6] =  {
+        vec3(4, -5.54, -8),
+        vec3(4, -5.54, -4),
+        vec3(4, -5.54, 0),
+        vec3(4, -5.54, 4),
+        vec3(4, -5.54, 8),
+        vec3(4, -5.54, 12)
+    };
+
+    vec4 black = vec4(0.0,0.0,0.0,1.0);
+
+    for (int i = 0; i < 6; i++) {
+       shapes[i] = new Rectangle(ul[i], ur[i], ll[i], lr[i], black);
+    }
+
+    vec3 centers[6] = {
+        vec3(1, -1.7, -9)*vec3(1,1,0.33333),
+        vec3(1, -1.7, -5)*vec3(1,1,0.33333),
+        vec3(1, -1.7, -1)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 3)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 7)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 11)*vec3(1,1,0.33333)
+    };
+
+    double dim = 2;
+    double height = 1;
+
+    for (int i = 0; i < 6; i++) {
+        shapes[6 + i] = new Box(centers[i], height, dim, dim, vec4(0.5,0.5,0.5,0.5));
     }
 }

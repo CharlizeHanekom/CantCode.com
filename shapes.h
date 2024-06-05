@@ -89,9 +89,6 @@ struct Walls: public Shape{
 struct Door: public Shape{
     Door(vec3);
 };
-struct WindowPane: public Shape{
-    WindowPane(vec3 center, double height, double width, double length, bool stained);
-};
 
 struct Roof: public Shape{
     Roof();
@@ -108,5 +105,14 @@ struct Objects: public Shape{
 struct Cylinder: public Shape{
     Cylinder(vec3 center, int numSidesOnBase, float height, float radius, vec4 color);
 };
+
+struct Floor: public Shape{
+    Floor();
+};
+
+struct Cutout: public Shape{
+    Cutout();
+};
+
 
 #endif /*SHAPES_H*/
