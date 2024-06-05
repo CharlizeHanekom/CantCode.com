@@ -314,7 +314,7 @@ WestWall::WestWall(vec3 center)
 
     // Right wall
     shapes[2] = new Box(vec3(center.x + middleWidth / 2 - sideWidth*1.18, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
-
+}
 WoodenDecoration::WoodenDecoration(vec3 center)
 {
     numShapes = 1;
