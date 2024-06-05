@@ -253,11 +253,11 @@ EastWall::EastWall(vec3 center)
     shapes[2] = new Box(center, 11, middleWidth, outWidth, vec4(0.4, 0.4, 0.4, 1));
 
     // Left walls
-    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y + 0.3, center.z), 10, sideWidth, 0.01, glassColor);
+    shapes[0] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 2, center.y + 0.25, center.z), 9.5, sideWidth, 0.01, glassColor);
     shapes[1] = new Box(vec3(center.x - middleWidth / 2 + sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 
     // Right walls
-    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y + 0.3, center.z), 10, sideWidth, 0.01, glassColor);
+    shapes[3] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 2, center.y + 0.25, center.z), 9.5, sideWidth, 0.01, glassColor);
     shapes[4] = new Box(vec3(center.x + middleWidth / 2 - sideWidth / 6, center.y, center.z), 11, sideWidth, outWidth, greyWallColor);
 
         //Doors
@@ -343,8 +343,8 @@ Walls::Walls()
     vec3 wallCenters[4] = {
         vec3(1.3, 0, 0),  // North Wall
         vec3(-1.3, 0, 0), // South Wall
-        vec3(0, 0, 5.5),  // East Wall
-        vec3(0, 0, -5.5)  // West Wall
+        vec3(0, 0, -5.5),  // East Wall
+        vec3(0, 0, 5.5)  // West Wall
     };
 
     numShapes = 4;
