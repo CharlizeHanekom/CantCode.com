@@ -107,13 +107,13 @@ int main()
         throw;
     }
 
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.529, 0.808, 0.922, 1.0);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_NEAREST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
+
     // Here we create a VAO
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
@@ -135,12 +135,53 @@ int main()
 
     double lastTime;
     lastTime = glfwGetTime();
+    bool spacePressed = false;
+    bool wireframe = false;
 
+    bool rightCTRLPressed = false;
+    bool dayTime = true;
 
     Shape *shp = new Scene();
 
     do
     {
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !spacePressed)
+        {
+            if (wireframe)
+            {
+                wireframe = false;
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+            else
+            {
+                wireframe = true;
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            spacePressed = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE)
+        {
+            spacePressed = false;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS && !rightCTRLPressed)
+        {
+            if (dayTime)
+            {
+                glClearColor(0.529, 0.808, 0.922, 1.0);
+            }
+            else
+            {
+                glClearColor(0.0, 0.0, 0.0, 0);
+            }
+            dayTime = !dayTime;
+            rightCTRLPressed = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE)
+        {
+            rightCTRLPressed = false;
+        }
+
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastTime;
 
@@ -223,7 +264,6 @@ int main()
 
         lastTime = currentTime;
         cout << "FPS: " << 1 / deltaTime << endl;
-
     } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
              glfwWindowShouldClose(window) == 0);
 
