@@ -226,7 +226,7 @@ Box::Box(vec3 center, double height, double width, double length, vec4 color)
 float outWidth = 1;
 vec4 glassColor(0, 0.7, 1, 0.2);
 vec4 greyWallColor(0.4, 0.4, 0.4, 1);
-vec4 whiteWallColor(0.9, 0.9, 0.9, 1);
+vec4 whiteWallColor(0.75, 0.75, 0.75, 1);
 NorthWall::NorthWall(vec3 center)
 {
     numShapes = 20;
@@ -240,7 +240,7 @@ NorthWall::NorthWall(vec3 center)
     float pillarWidth = 0.4;
 
     // Middle piece
-    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, vec4(0.9, 0.9, 0.9, 1));
+    shapes[2] = new Box(center, largeHeight, outWidth, totalLength, whiteWallColor);
 
     // Top pieces
     shapes[0] = new Box(vec3(center.x, center.y + largeHeight / 2 - smallHeight / 2, center.z), smallHeight, 0.01, totalLength, glassColor);
