@@ -692,7 +692,68 @@ Cylinder::Cylinder(vec3 center, int numSidesOnBase, float height, float radius, 
 }
 
 Floor::Floor() {
-    numShapes = 1;
+    numShapes = 2;
     shapes = new Shape *[numShapes];
     shapes[0] = new Rectangle(vec3(-4, -5.55, -16.5), vec3(4, -5.55, -16.5), vec3(-4, -5.55, 16.5), vec3(4, -5.55, 16.5), vec4(0.3,0.3,0.3,1.0));
+    shapes[1] = new Cutout();
+}
+
+Cutout::Cutout() {
+    numShapes = 12;
+    shapes = new Shape *[numShapes];
+
+    vec3 ul[6] = {
+        vec3(2, -5.54, -10),
+        vec3(2, -5.54, -6),
+        vec3(2, -5.54, -2),
+        vec3(2, -5.54, 2),
+        vec3(2, -5.54, 6),
+        vec3(2, -5.54, 10)
+    };
+    vec3 ur[6] = {
+        vec3(4, -5.54, -10),
+        vec3(4, -5.54, -6),
+        vec3(4, -5.54, -2),
+        vec3(4, -5.54, 2),
+        vec3(4, -5.54, 6),
+        vec3(4, -5.54, 10)
+    };
+    vec3 ll[6] = {
+        vec3(2, -5.54, -8),
+        vec3(2, -5.54, -4),
+        vec3(2, -5.54, 0),
+        vec3(2, -5.54, 4),
+        vec3(2, -5.54, 8),
+        vec3(2, -5.54, 12)
+    };
+    vec3 lr[6] =  {
+        vec3(4, -5.54, -8),
+        vec3(4, -5.54, -4),
+        vec3(4, -5.54, 0),
+        vec3(4, -5.54, 4),
+        vec3(4, -5.54, 8),
+        vec3(4, -5.54, 12)
+    };
+
+    vec4 black = vec4(0.0,0.0,0.0,1.0);
+
+    for (int i = 0; i < 6; i++) {
+       shapes[i] = new Rectangle(ul[i], ur[i], ll[i], lr[i], black);
+    }
+
+    vec3 centers[6] = {
+        vec3(1, -1.7, -9)*vec3(1,1,0.33333),
+        vec3(1, -1.7, -5)*vec3(1,1,0.33333),
+        vec3(1, -1.7, -1)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 3)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 7)*vec3(1,1,0.33333),
+        vec3(1, -1.7, 11)*vec3(1,1,0.33333)
+    };
+
+    double dim = 2;
+    double height = 1;
+
+    for (int i = 0; i < 6; i++) {
+        shapes[6 + i] = new Box(centers[i], height, dim, dim, vec4(0.5,0.5,0.5,0.5));
+    }
 }

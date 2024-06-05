@@ -92,4 +92,9 @@ struct Floor: public Shape{
     Floor();
 };
 
+struct Cutout: public Shape{
+    Cutout();
+};
+
+
 #endif /*SHAPES_H*/
